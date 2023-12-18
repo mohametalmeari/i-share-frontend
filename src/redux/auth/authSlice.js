@@ -22,9 +22,26 @@ export const loginUser = createAsyncThunk(
   },
 );
 
+export const logoutUser = createAsyncThunk(
+  'auth/logoutUser',
+  async (_, thunkAPI) => {
+    try {
+      const authHeaders = JSON.parse(Cookies.get('authHeaders')) || null;
+      axios.defaults.headers.common['Content-Type'] = 'application/json';
+      axios.defaults.headers.common.uid = authHeaders.uid;
+      axios.defaults.headers.common.client = authHeaders.client;
+      axios.defaults.headers.common['access-token'] = authHeaders['access-token'];
+
+      const logout = await axios.delete(`${baseURL}/auth/sign_out`);
+      return logout.data.success;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
 const initialState = {
   username: Cookies.get('username') || null,
-  authHeaders: Cookies.get('authHeaders') || {},
   isLoading: true,
   error: undefined,
 };
@@ -40,13 +57,27 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        state.authHeaders = payload.authHeaders;
         state.username = payload.username;
-        Cookies.set('authHeaders', JSON.stringify(state.authHeaders));
+        Cookies.set('authHeaders', JSON.stringify(payload.authHeaders));
         Cookies.set('username', JSON.stringify(state.username));
-        console.log(state.authHeaders);
       })
       .addCase(loginUser.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+    // Logout
+      .addCase(logoutUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(logoutUser.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        if (payload) {
+          Cookies.remove('authHeaders');
+          Cookies.remove('username');
+          state.username = null;
+        }
+      })
+      .addCase(logoutUser.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
       });
