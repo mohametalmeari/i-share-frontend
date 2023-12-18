@@ -14,7 +14,8 @@ export const loginUser = createAsyncThunk(
         client: login.headers.client,
         'access-token': login.headers['access-token'],
       };
-      return authHeaders;
+      const { username } = login.data.data;
+      return { authHeaders, username };
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -22,6 +23,7 @@ export const loginUser = createAsyncThunk(
 );
 
 const initialState = {
+  username: Cookies.get('username') || null,
   authHeaders: Cookies.get('authHeaders') || {},
   isLoading: true,
   error: undefined,
@@ -38,8 +40,11 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        state.authHeaders = payload;
+        state.authHeaders = payload.authHeaders;
+        state.username = payload.username;
         Cookies.set('authHeaders', JSON.stringify(state.authHeaders));
+        Cookies.set('username', JSON.stringify(state.username));
+        console.log(state.authHeaders);
       })
       .addCase(loginUser.rejected, (state, { payload }) => {
         state.isLoading = false;
