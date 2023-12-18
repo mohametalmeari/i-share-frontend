@@ -1,6 +1,10 @@
+import LoginForm from '../components/LoginForm';
+import Logout from '../components/Logout';
+
 const Login = () => (
   <div>
-    Login Page
+    <LoginForm />
+    <Logout />
   </div>
 );
 export default Login;
