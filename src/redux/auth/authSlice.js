@@ -9,6 +9,7 @@ export const loginUser = createAsyncThunk(
   async (formData, thunkAPI) => {
     try {
       const login = await axios.post(`${baseURL}/auth/sign_in`, formData);
+      console.log(login);
       const authHeaders = {
         uid: login.headers.uid,
         client: login.headers.client,
@@ -17,7 +18,8 @@ export const loginUser = createAsyncThunk(
       const { username } = login.data.data;
       return { authHeaders, username };
     } catch (error) {
-      return thunkAPI.rejectWithValue(error);
+      console.log(error);
+      return thunkAPI.rejectWithValue('failed to log in');
     }
   },
 );
@@ -35,7 +37,28 @@ export const logoutUser = createAsyncThunk(
       const logout = await axios.delete(`${baseURL}/auth/sign_out`);
       return logout.data.success;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error);
+      console.log(error);
+      return thunkAPI.rejectWithValue('failed to log out');
+    }
+  },
+);
+
+export const signupUser = createAsyncThunk(
+  'auth/signupUser',
+  async (formData, thunkAPI) => {
+    try {
+      const signup = await axios.post(`${baseURL}/auth`, formData);
+      console.log(signup);
+      const authHeaders = {
+        uid: signup.headers.uid,
+        client: signup.headers.client,
+        'access-token': signup.headers['access-token'],
+      };
+      const { username } = signup.data.data;
+      return { authHeaders, username };
+    } catch (error) {
+      console.log(error.response.data.errors.full_messages[0]);
+      return thunkAPI.rejectWithValue('failed to sign up');
     }
   },
 );
@@ -78,6 +101,20 @@ const authSlice = createSlice({
         }
       })
       .addCase(logoutUser.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+    // Signup
+      .addCase(signupUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(signupUser.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.username = payload.username;
+        Cookies.set('authHeaders', JSON.stringify(payload.authHeaders));
+        Cookies.set('username', JSON.stringify(state.username));
+      })
+      .addCase(signupUser.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
       });
