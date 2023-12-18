@@ -1,6 +1,8 @@
+import Photos from '../components/Photos';
+
 const Home = () => (
   <div>
-    Home Page
+    <Photos />
   </div>
 );
 export default Home;
