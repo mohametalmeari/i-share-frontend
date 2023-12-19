@@ -64,6 +64,26 @@ export const deletePhoto = createAsyncThunk(
   },
 );
 
+export const archivePhoto = createAsyncThunk(
+  'photos/archivePhoto',
+  async (photoId, thunkAPI) => {
+    try {
+      const authHeaders = JSON.parse(Cookies.get('authHeaders')) || null;
+      axios.defaults.headers.common['Content-Type'] = 'application/json';
+      axios.defaults.headers.common.uid = authHeaders.uid;
+      axios.defaults.headers.common.client = authHeaders.client;
+      axios.defaults.headers.common['access-token'] = authHeaders['access-token'];
+
+      const response = await axios.put(`${baseURL}/photos/${photoId}`);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue('failed to delete');
+    }
+  },
+);
+
 const initialState = {
   photos: [],
   isLoading: true,
@@ -108,6 +128,18 @@ const photoSlice = createSlice({
         console.log(payload);
       })
       .addCase(deletePhoto.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+    // Archive Photo
+      .addCase(archivePhoto.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(archivePhoto.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        console.log(payload);
+      })
+      .addCase(archivePhoto.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
       });

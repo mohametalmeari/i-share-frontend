@@ -5,12 +5,12 @@ import { deletePhoto } from '../redux/posts/photoSlice';
 const DeletePhoto = ({ id }) => {
   const dispatch = useDispatch();
 
-  const handleLogout = async () => {
+  const handleDelete = async () => {
     dispatch(deletePhoto(id));
   };
   return (
     <>
-      <button type="button" onClick={handleLogout}>
+      <button type="button" onClick={handleDelete}>
         Delete
       </button>
     </>
