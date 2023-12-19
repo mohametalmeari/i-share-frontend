@@ -24,6 +24,26 @@ export const fetchPhotos = createAsyncThunk(
   },
 );
 
+export const createPhoto = createAsyncThunk(
+  'photos/createPhoto',
+  async (formData, thunkAPI) => {
+    try {
+      const authHeaders = JSON.parse(Cookies.get('authHeaders')) || null;
+      axios.defaults.headers.common['Content-Type'] = 'application/json';
+      axios.defaults.headers.common.uid = authHeaders.uid;
+      axios.defaults.headers.common.client = authHeaders.client;
+      axios.defaults.headers.common['access-token'] = authHeaders['access-token'];
+
+      const response = await axios.post(`${baseURL}/photos`, formData);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue('failed to create');
+    }
+  },
+);
+
 const initialState = {
   photos: [],
   isLoading: true,
@@ -35,6 +55,7 @@ const photoSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder
+    // Fetch Photos
       .addCase(fetchPhotos.pending, (state) => {
         state.isLoading = true;
       })
@@ -43,6 +64,19 @@ const photoSlice = createSlice({
         state.photos = payload;
       })
       .addCase(fetchPhotos.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+    // Create Photo
+      .addCase(createPhoto.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createPhoto.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        // state.photos = payload;
+        console.log(payload);
+      })
+      .addCase(createPhoto.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
       });
