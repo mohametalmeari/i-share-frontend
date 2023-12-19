@@ -44,6 +44,26 @@ export const createPhoto = createAsyncThunk(
   },
 );
 
+export const deletePhoto = createAsyncThunk(
+  'photos/deletePhoto',
+  async (photoId, thunkAPI) => {
+    try {
+      const authHeaders = JSON.parse(Cookies.get('authHeaders')) || null;
+      axios.defaults.headers.common['Content-Type'] = 'application/json';
+      axios.defaults.headers.common.uid = authHeaders.uid;
+      axios.defaults.headers.common.client = authHeaders.client;
+      axios.defaults.headers.common['access-token'] = authHeaders['access-token'];
+
+      const response = await axios.delete(`${baseURL}/photos/${photoId}`);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue('failed to delete');
+    }
+  },
+);
+
 const initialState = {
   photos: [],
   isLoading: true,
@@ -56,15 +76,15 @@ const photoSlice = createSlice({
   extraReducers: (builder) => {
     builder
     // Fetch Photos
-      .addCase(fetchPhotos.pending, (state) => {
-        state.isLoading = true;
+      .addCase(fetchPhotos.pending, () => {
+        // state.isLoading = true;
       })
       .addCase(fetchPhotos.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
+        // state.isLoading = false;
         state.photos = payload;
       })
       .addCase(fetchPhotos.rejected, (state, { payload }) => {
-        state.isLoading = false;
+        // state.isLoading = false;
         state.error = payload;
       })
     // Create Photo
@@ -73,10 +93,21 @@ const photoSlice = createSlice({
       })
       .addCase(createPhoto.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        // state.photos = payload;
         console.log(payload);
       })
       .addCase(createPhoto.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+    // Delete Photo
+      .addCase(deletePhoto.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deletePhoto.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        console.log(payload);
+      })
+      .addCase(deletePhoto.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
       });
