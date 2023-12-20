@@ -1,28 +1,31 @@
 import PropTypes from 'prop-types';
+import { NavLink } from 'react-router-dom';
 import DeletePhoto from './DeletePhoto';
 import ArchivePhoto from './ArchivePhoto';
 import LikePhoto from './LikePhoto';
 
 const PhotoCard = ({
-  id, photo,
+  id, name, imageUrl, caption, likes, liked, control,
 }) => (
   <div>
     <p>
 
-      {photo.user.name}
+      {name}
     </p>
-    <img src={photo.image_url} alt="" />
+    <NavLink to={`photos/${id}`}>
+      <img src={imageUrl} alt="i-share" />
+    </NavLink>
     <p>
-      {photo.caption}
+      {caption}
     </p>
     <span>
-      {photo.likes}
+      {likes}
     </span>
     <LikePhoto
       id={id}
-      liked={photo.liked}
+      liked={liked}
     />
-    {photo.user.control && (
+    {control && (
     <>
       <DeletePhoto
         id={id}
@@ -39,5 +42,10 @@ export default PhotoCard;
 
 PhotoCard.propTypes = {
   id: PropTypes.number.isRequired,
-  photo: PropTypes.isRequired,
+  name: PropTypes.string.isRequired,
+  imageUrl: PropTypes.string.isRequired,
+  caption: PropTypes.string.isRequired,
+  likes: PropTypes.number.isRequired,
+  liked: PropTypes.bool.isRequired,
+  control: PropTypes.bool.isRequired,
 };

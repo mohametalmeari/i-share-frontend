@@ -16,7 +16,12 @@ const Photos = () => {
         <PhotoCard
           key={photo.id}
           id={photo.id}
-          photo={photo}
+          name={photo.user.name}
+          imageUrl={photo.image_url}
+          caption={photo.caption}
+          likes={photo.likes}
+          liked={photo.liked}
+          control={photo.user.control}
         />
       ))}
     </>

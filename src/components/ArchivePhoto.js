@@ -5,12 +5,12 @@ import { archivePhoto } from '../redux/posts/photoSlice';
 const ArchivePhoto = ({ id }) => {
   const dispatch = useDispatch();
 
-  const handleLogout = async () => {
+  const handleArchive = async () => {
     dispatch(archivePhoto(id));
   };
   return (
     <>
-      <button type="button" onClick={handleLogout}>
+      <button type="button" onClick={handleArchive}>
         Archive
       </button>
     </>

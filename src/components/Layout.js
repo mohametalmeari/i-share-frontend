@@ -10,11 +10,10 @@ const Layout = () => {
   useEffect(() => {
     if (!loggedIn && path !== '/login' && path !== '/signup') {
       navigate('/login');
-      console.log(path);
     } else if (loggedIn && (path === '/login' || path === '/signup')) {
       navigate('/');
     }
-  }, [loggedIn]);
+  }, [loggedIn, navigate, path]);
 
   return (
     <div>

@@ -9,10 +9,8 @@ export const fetchPhotos = createAsyncThunk(
       setHeaders();
 
       const response = await axios.get(`${baseURL}/photos`);
-      console.log(response.data);
       return response.data;
     } catch (error) {
-      console.log(error);
       return thunkAPI.rejectWithValue('failed to connect');
     }
   },
@@ -25,10 +23,8 @@ export const createPhoto = createAsyncThunk(
       setHeaders();
 
       const response = await axios.post(`${baseURL}/photos`, formData);
-      console.log(response.data);
       return response.data;
     } catch (error) {
-      console.log(error);
       return thunkAPI.rejectWithValue('failed to create');
     }
   },
@@ -41,10 +37,8 @@ export const deletePhoto = createAsyncThunk(
       setHeaders();
 
       const response = await axios.delete(`${baseURL}/photos/${photoId}`);
-      console.log(response.data);
-      return response.data;
+      return { deleted: response.data.message === 'deleted', photoId };
     } catch (error) {
-      console.log(error);
       return thunkAPI.rejectWithValue('failed to delete');
     }
   },
@@ -59,7 +53,6 @@ export const archivePhoto = createAsyncThunk(
       const response = await axios.put(`${baseURL}/photos/${photoId}`);
       return { archive: response.data.archive, photoId };
     } catch (error) {
-      console.log(error);
       return thunkAPI.rejectWithValue('failed to archive');
     }
   },
@@ -70,14 +63,25 @@ export const likePhoto = createAsyncThunk(
   async ({ id, liked }, thunkAPI) => {
     try {
       setHeaders();
-      console.log(`is ${liked}`);
       const response = liked
         ? await axios.delete(`${baseURL}/photos/${id}/unlike`)
         : await axios.post(`${baseURL}/photos/${id}/like`);
 
       return { liked: response.data.liked, id };
     } catch (error) {
-      console.log(error);
+      return thunkAPI.rejectWithValue('failed to like');
+    }
+  },
+);
+
+export const fetchPhoto = createAsyncThunk(
+  'photos/fetchPhoto',
+  async (photoId, thunkAPI) => {
+    try {
+      setHeaders();
+      const response = await axios.get(`${baseURL}/photos/${photoId}`);
+      return response.data;
+    } catch (error) {
       return thunkAPI.rejectWithValue('failed to like');
     }
   },
@@ -85,6 +89,9 @@ export const likePhoto = createAsyncThunk(
 
 const initialState = {
   photos: [],
+  photo: {
+    id: 0, image_url: '', caption: '', likes: 0, liked: false, user: { name: '', username: '', control: false },
+  },
   isLoading: true,
   error: undefined,
 };
@@ -110,9 +117,8 @@ const photoSlice = createSlice({
       .addCase(createPhoto.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createPhoto.fulfilled, (state, { payload }) => {
+      .addCase(createPhoto.fulfilled, (state) => {
         state.isLoading = false;
-        console.log(payload);
       })
       .addCase(createPhoto.rejected, (state, { payload }) => {
         state.isLoading = false;
@@ -124,7 +130,9 @@ const photoSlice = createSlice({
       })
       .addCase(deletePhoto.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        console.log(payload);
+        if (payload.deleted) {
+          state.photos = state.photos.filter((obj) => (obj.id !== payload.photoId));
+        }
       })
       .addCase(deletePhoto.rejected, (state, { payload }) => {
         state.isLoading = false;
@@ -150,12 +158,30 @@ const photoSlice = createSlice({
       })
       .addCase(likePhoto.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        console.log(payload);
         state.photos = state.photos.map((obj) => (obj.id === payload.id
           ? { ...obj, liked: payload.liked, likes: (payload.liked ? obj.likes + 1 : obj.likes - 1) }
           : obj));
+        if (state.photo.id === payload.id) {
+          state.photo = {
+            ...state.photo,
+            liked: payload.liked,
+            likes: (payload.liked ? state.photo.likes + 1 : state.photo.likes - 1),
+          };
+        }
       })
       .addCase(likePhoto.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+    // Fetch Photo
+      .addCase(fetchPhoto.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchPhoto.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.photo = payload;
+      })
+      .addCase(fetchPhoto.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
       });
