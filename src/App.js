@@ -5,6 +5,8 @@ import Home from './routes/Home';
 import Login from './routes/Login';
 import NotFound from './routes/NotFound';
 import Signup from './routes/Signup';
+import NewPost from './routes/NewPost';
+import ShowPhoto from './routes/ShowPhoto';
 
 function App() {
   return (
@@ -13,6 +15,8 @@ function App() {
         <Route index element={<Home />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
+        <Route path="new" element={<NewPost />} />
+        <Route path="photos/:id" element={<ShowPhoto />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

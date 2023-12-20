@@ -1,15 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-
-const baseURL = 'https://i-share-api.onrender.com';
+import { baseURL, setHeaders } from '../utils';
 
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async (formData, thunkAPI) => {
     try {
       const login = await axios.post(`${baseURL}/auth/sign_in`, formData);
-      console.log(login);
       const authHeaders = {
         uid: login.headers.uid,
         client: login.headers.client,
@@ -18,7 +16,6 @@ export const loginUser = createAsyncThunk(
       const { username } = login.data.data;
       return { authHeaders, username };
     } catch (error) {
-      console.log(error);
       return thunkAPI.rejectWithValue('failed to log in');
     }
   },
@@ -28,16 +25,11 @@ export const logoutUser = createAsyncThunk(
   'auth/logoutUser',
   async (_, thunkAPI) => {
     try {
-      const authHeaders = JSON.parse(Cookies.get('authHeaders')) || null;
-      axios.defaults.headers.common['Content-Type'] = 'application/json';
-      axios.defaults.headers.common.uid = authHeaders.uid;
-      axios.defaults.headers.common.client = authHeaders.client;
-      axios.defaults.headers.common['access-token'] = authHeaders['access-token'];
+      setHeaders();
 
       const logout = await axios.delete(`${baseURL}/auth/sign_out`);
       return logout.data.success;
     } catch (error) {
-      console.log(error);
       return thunkAPI.rejectWithValue('failed to log out');
     }
   },
@@ -48,7 +40,6 @@ export const signupUser = createAsyncThunk(
   async (formData, thunkAPI) => {
     try {
       const signup = await axios.post(`${baseURL}/auth`, formData);
-      console.log(signup);
       const authHeaders = {
         uid: signup.headers.uid,
         client: signup.headers.client,
@@ -57,13 +48,13 @@ export const signupUser = createAsyncThunk(
       const { username } = signup.data.data;
       return { authHeaders, username };
     } catch (error) {
-      console.log(error.response.data.errors.full_messages[0]);
       return thunkAPI.rejectWithValue('failed to sign up');
     }
   },
 );
 
 const initialState = {
+  loggedIn: Cookies.get('loggedIn') || false,
   username: Cookies.get('username') || null,
   isLoading: true,
   error: undefined,
@@ -81,6 +72,9 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.username = payload.username;
+        state.loggedIn = true;
+
+        Cookies.set('loggedIn', JSON.stringify(true));
         Cookies.set('authHeaders', JSON.stringify(payload.authHeaders));
         Cookies.set('username', JSON.stringify(state.username));
       })
@@ -97,12 +91,16 @@ const authSlice = createSlice({
         if (payload) {
           Cookies.remove('authHeaders');
           Cookies.remove('username');
+          Cookies.remove('loggedIn');
           state.username = null;
+          state.loggedIn = false;
         }
       })
       .addCase(logoutUser.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
+        state.loggedIn = false;
+        Cookies.set('loggedIn', JSON.stringify(false));
       })
     // Signup
       .addCase(signupUser.pending, (state) => {
@@ -111,12 +109,17 @@ const authSlice = createSlice({
       .addCase(signupUser.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.username = payload.username;
+        state.loggedIn = true;
+
+        Cookies.set('loggedIn', JSON.stringify(true));
         Cookies.set('authHeaders', JSON.stringify(payload.authHeaders));
         Cookies.set('username', JSON.stringify(state.username));
       })
       .addCase(signupUser.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
+        state.loggedIn = false;
+        Cookies.set('loggedIn', JSON.stringify(false));
       });
   },
 });
