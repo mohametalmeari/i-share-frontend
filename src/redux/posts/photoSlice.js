@@ -1,18 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import Cookies from 'js-cookie';
-
-const baseURL = 'https://i-share-api.onrender.com';
+import { baseURL, setHeaders } from '../utils';
 
 export const fetchPhotos = createAsyncThunk(
   'photos/fetchPhotos',
   async (_, thunkAPI) => {
     try {
-      const authHeaders = JSON.parse(Cookies.get('authHeaders')) || null;
-      axios.defaults.headers.common['Content-Type'] = 'application/json';
-      axios.defaults.headers.common.uid = authHeaders.uid;
-      axios.defaults.headers.common.client = authHeaders.client;
-      axios.defaults.headers.common['access-token'] = authHeaders['access-token'];
+      setHeaders();
 
       const response = await axios.get(`${baseURL}/photos`);
       console.log(response.data);
@@ -28,11 +22,7 @@ export const createPhoto = createAsyncThunk(
   'photos/createPhoto',
   async (formData, thunkAPI) => {
     try {
-      const authHeaders = JSON.parse(Cookies.get('authHeaders')) || null;
-      axios.defaults.headers.common['Content-Type'] = 'application/json';
-      axios.defaults.headers.common.uid = authHeaders.uid;
-      axios.defaults.headers.common.client = authHeaders.client;
-      axios.defaults.headers.common['access-token'] = authHeaders['access-token'];
+      setHeaders();
 
       const response = await axios.post(`${baseURL}/photos`, formData);
       console.log(response.data);
@@ -48,11 +38,7 @@ export const deletePhoto = createAsyncThunk(
   'photos/deletePhoto',
   async (photoId, thunkAPI) => {
     try {
-      const authHeaders = JSON.parse(Cookies.get('authHeaders')) || null;
-      axios.defaults.headers.common['Content-Type'] = 'application/json';
-      axios.defaults.headers.common.uid = authHeaders.uid;
-      axios.defaults.headers.common.client = authHeaders.client;
-      axios.defaults.headers.common['access-token'] = authHeaders['access-token'];
+      setHeaders();
 
       const response = await axios.delete(`${baseURL}/photos/${photoId}`);
       console.log(response.data);
@@ -68,11 +54,7 @@ export const archivePhoto = createAsyncThunk(
   'photos/archivePhoto',
   async (photoId, thunkAPI) => {
     try {
-      const authHeaders = JSON.parse(Cookies.get('authHeaders')) || null;
-      axios.defaults.headers.common['Content-Type'] = 'application/json';
-      axios.defaults.headers.common.uid = authHeaders.uid;
-      axios.defaults.headers.common.client = authHeaders.client;
-      axios.defaults.headers.common['access-token'] = authHeaders['access-token'];
+      setHeaders();
 
       const response = await axios.put(`${baseURL}/photos/${photoId}`);
       console.log(response.data);

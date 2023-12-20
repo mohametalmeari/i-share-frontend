@@ -1,21 +1,44 @@
 import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import Logout from './Logout';
 
-const links = [
-  { path: '/', text: 'Home' },
+const loggedInLinks = [
   { path: '/login', text: 'Log in' },
   { path: '/signup', text: 'Sign up' },
 ];
+const loggedOutLinks = [
+  { path: '/', text: 'Home' },
+  { path: '/new', text: 'New Post' },
+];
 
-const Navbar = () => (
-  <ul>
-    {links.map((link) => (
-      <li key={link.text}>
-        <NavLink to={link.path}>
-          {link.text}
-        </NavLink>
+const Navbar = () => {
+  const { loggedIn } = useSelector((state) => state.auth);
+  return (
+    <ul>
+      {
+      loggedIn ? loggedOutLinks.map((link) => (
+        <li key={link.text}>
+          <NavLink to={link.path}>
+            {link.text}
+          </NavLink>
+        </li>
+      ))
+        : loggedInLinks.map((link) => (
+          <li key={link.text}>
+            <NavLink to={link.path}>
+              {link.text}
+            </NavLink>
+          </li>
+        ))
+
+    }
+      {loggedIn && (
+      <li>
+        <Logout />
       </li>
-    ))}
-  </ul>
-);
+      )}
+    </ul>
+  );
+};
 
 export default Navbar;

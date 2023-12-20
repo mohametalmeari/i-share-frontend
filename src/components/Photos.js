@@ -17,7 +17,9 @@ const Photos = () => {
           key={photo.id}
           id={photo.id}
           imageUrl={photo.image_url}
-          user={photo.user_id.toString()}
+          caption={photo.caption}
+          user={photo.user.name}
+          control={photo.user.control}
         />
       ))}
     </>

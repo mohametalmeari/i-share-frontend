@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-
-const baseURL = 'https://i-share-api.onrender.com';
+import { baseURL, setHeaders } from '../utils';
 
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
@@ -28,11 +27,7 @@ export const logoutUser = createAsyncThunk(
   'auth/logoutUser',
   async (_, thunkAPI) => {
     try {
-      const authHeaders = JSON.parse(Cookies.get('authHeaders')) || null;
-      axios.defaults.headers.common['Content-Type'] = 'application/json';
-      axios.defaults.headers.common.uid = authHeaders.uid;
-      axios.defaults.headers.common.client = authHeaders.client;
-      axios.defaults.headers.common['access-token'] = authHeaders['access-token'];
+      setHeaders();
 
       const logout = await axios.delete(`${baseURL}/auth/sign_out`);
       return logout.data.success;
@@ -64,6 +59,7 @@ export const signupUser = createAsyncThunk(
 );
 
 const initialState = {
+  loggedIn: Cookies.get('loggedIn') || false,
   username: Cookies.get('username') || null,
   isLoading: true,
   error: undefined,
@@ -81,6 +77,9 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.username = payload.username;
+        state.loggedIn = true;
+
+        Cookies.set('loggedIn', JSON.stringify(true));
         Cookies.set('authHeaders', JSON.stringify(payload.authHeaders));
         Cookies.set('username', JSON.stringify(state.username));
       })
@@ -97,12 +96,16 @@ const authSlice = createSlice({
         if (payload) {
           Cookies.remove('authHeaders');
           Cookies.remove('username');
+          Cookies.remove('loggedIn');
           state.username = null;
+          state.loggedIn = false;
         }
       })
       .addCase(logoutUser.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
+        state.loggedIn = false;
+        Cookies.set('loggedIn', JSON.stringify(false));
       })
     // Signup
       .addCase(signupUser.pending, (state) => {
@@ -111,12 +114,17 @@ const authSlice = createSlice({
       .addCase(signupUser.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.username = payload.username;
+        state.loggedIn = true;
+
+        Cookies.set('loggedIn', JSON.stringify(true));
         Cookies.set('authHeaders', JSON.stringify(payload.authHeaders));
         Cookies.set('username', JSON.stringify(state.username));
       })
       .addCase(signupUser.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
+        state.loggedIn = false;
+        Cookies.set('loggedIn', JSON.stringify(false));
       });
   },
 });
