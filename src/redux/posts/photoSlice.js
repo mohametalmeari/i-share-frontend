@@ -57,11 +57,28 @@ export const archivePhoto = createAsyncThunk(
       setHeaders();
 
       const response = await axios.put(`${baseURL}/photos/${photoId}`);
-      console.log(response.data);
-      return response.data;
+      return { archive: response.data.archive, photoId };
     } catch (error) {
       console.log(error);
-      return thunkAPI.rejectWithValue('failed to delete');
+      return thunkAPI.rejectWithValue('failed to archive');
+    }
+  },
+);
+
+export const likePhoto = createAsyncThunk(
+  'photos/likePhoto',
+  async ({ id, liked }, thunkAPI) => {
+    try {
+      setHeaders();
+      console.log(`is ${liked}`);
+      const response = liked
+        ? await axios.delete(`${baseURL}/photos/${id}/unlike`)
+        : await axios.post(`${baseURL}/photos/${id}/like`);
+
+      return { liked: response.data.liked, id };
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue('failed to like');
     }
   },
 );
@@ -119,9 +136,26 @@ const photoSlice = createSlice({
       })
       .addCase(archivePhoto.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        console.log(payload);
+        if (payload.archive) {
+          state.photos = state.photos.filter((obj) => (obj.id !== payload.photoId));
+        }
       })
       .addCase(archivePhoto.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+    // Like Photo
+      .addCase(likePhoto.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(likePhoto.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        console.log(payload);
+        state.photos = state.photos.map((obj) => (obj.id === payload.id
+          ? { ...obj, liked: payload.liked, likes: (payload.liked ? obj.likes + 1 : obj.likes - 1) }
+          : obj));
+      })
+      .addCase(likePhoto.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
       });

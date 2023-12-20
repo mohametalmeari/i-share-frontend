@@ -5,21 +5,18 @@ import PhotoCard from './PhotoCard';
 
 const Photos = () => {
   const dispatch = useDispatch();
-  const { photos, isLoading } = useSelector((state) => state.photo);
+  const { photos } = useSelector((state) => state.photo);
 
   useEffect(() => {
     dispatch(fetchPhotos());
-  }, [dispatch, isLoading]);
+  }, [dispatch]);
   return (
     <>
       {photos.map((photo) => (
         <PhotoCard
           key={photo.id}
           id={photo.id}
-          imageUrl={photo.image_url}
-          caption={photo.caption}
-          user={photo.user.name}
-          control={photo.user.control}
+          photo={photo}
         />
       ))}
     </>

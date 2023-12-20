@@ -11,7 +11,7 @@ const Layout = () => {
     if (!loggedIn && path !== '/login' && path !== '/signup') {
       navigate('/login');
       console.log(path);
-    } else {
+    } else if (loggedIn && (path === '/login' || path === '/signup')) {
       navigate('/');
     }
   }, [loggedIn]);

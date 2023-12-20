@@ -1,21 +1,28 @@
 import PropTypes from 'prop-types';
 import DeletePhoto from './DeletePhoto';
 import ArchivePhoto from './ArchivePhoto';
+import LikePhoto from './LikePhoto';
 
 const PhotoCard = ({
-  id, imageUrl, caption, user, control,
+  id, photo,
 }) => (
   <div>
     <p>
 
-      {user}
+      {photo.user.name}
     </p>
-    <img src={imageUrl} alt="" />
+    <img src={photo.image_url} alt="" />
     <p>
-      {caption}
-
+      {photo.caption}
     </p>
-    {control && (
+    <span>
+      {photo.likes}
+    </span>
+    <LikePhoto
+      id={id}
+      liked={photo.liked}
+    />
+    {photo.user.control && (
     <>
       <DeletePhoto
         id={id}
@@ -32,13 +39,5 @@ export default PhotoCard;
 
 PhotoCard.propTypes = {
   id: PropTypes.number.isRequired,
-  imageUrl: PropTypes.string,
-  caption: PropTypes.string,
-  user: PropTypes.string.isRequired,
-  control: PropTypes.bool,
-};
-PhotoCard.defaultProps = {
-  imageUrl: 'default url',
-  caption: 'default caption',
-  control: false,
+  photo: PropTypes.isRequired,
 };

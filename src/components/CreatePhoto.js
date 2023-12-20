@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { createPhoto } from '../redux/posts/photoSlice';
 
 const CreatePhoto = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     caption: 'a new image',
@@ -14,7 +16,8 @@ const CreatePhoto = () => {
   };
 
   const handleCreatePhoto = async () => {
-    dispatch(createPhoto(formData));
+    await dispatch(createPhoto(formData));
+    navigate('/');
   };
   return (
     <>
