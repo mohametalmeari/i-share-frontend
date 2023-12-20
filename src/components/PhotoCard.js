@@ -5,16 +5,19 @@ import ArchivePhoto from './ArchivePhoto';
 import LikePhoto from './LikePhoto';
 
 const PhotoCard = ({
-  id, name, imageUrl, caption, likes, liked, control,
+  id, name, imageUrl, caption, likes, liked, control, navigator,
 }) => (
   <div>
     <p>
 
       {name}
     </p>
-    <NavLink to={`photos/${id}`}>
-      <img src={imageUrl} alt="i-share" />
-    </NavLink>
+    {navigator ? (
+      <NavLink to={`photos/${id}`}>
+        <img src={imageUrl} alt="i-share" />
+      </NavLink>
+    )
+      : <img src={imageUrl} alt="i-share" />}
     <p>
       {caption}
     </p>
@@ -48,4 +51,5 @@ PhotoCard.propTypes = {
   likes: PropTypes.number.isRequired,
   liked: PropTypes.bool.isRequired,
   control: PropTypes.bool.isRequired,
+  navigator: PropTypes.bool.isRequired,
 };

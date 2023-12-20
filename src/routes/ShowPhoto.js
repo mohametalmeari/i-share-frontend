@@ -22,6 +22,7 @@ const ShowPhoto = () => {
         likes={photo.likes}
         liked={photo.liked}
         control={photo.user.control}
+        navigator={false}
       />
       <br />
     </div>
