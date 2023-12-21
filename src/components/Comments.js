@@ -12,7 +12,8 @@ const Comments = ({ photoId }) => {
   useEffect(() => {
     dispatch(fetchComments(photoId));
     console.log(comments);
-  }, [dispatch]);
+    console.log('-----');
+  }, []);
 
   return (
     <>
@@ -24,6 +25,7 @@ const Comments = ({ photoId }) => {
         <CommentCard
           key={comment.id}
           id={comment.id}
+          photoId={photoId}
           name={comment.user.name}
           content={comment.content}
           likes={comment.likes}

@@ -16,6 +16,21 @@ export const fetchComments = createAsyncThunk(
   },
 );
 
+export const fetchReplies = createAsyncThunk(
+  'comments/fetchReplies',
+  async ({ photoId, commentId }, thunkAPI) => {
+    try {
+      setHeaders();
+
+      const response = await axios.get(`${baseURL}/photos/${photoId}/comments/${commentId}/replies`);
+      console.log('fetch replies:', response.data);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue('failed to connect');
+    }
+  },
+);
+
 export const createComment = createAsyncThunk(
   'comments/createComment',
   async ({ formData, photoId }, thunkAPI) => {
@@ -31,8 +46,54 @@ export const createComment = createAsyncThunk(
   },
 );
 
+export const createReply = createAsyncThunk(
+  'comments/createReply',
+  async ({ formData, photoId, commentId }, thunkAPI) => {
+    try {
+      setHeaders();
+
+      const response = await axios.post(`${baseURL}/photos/${photoId}/comments/${commentId}/replies`, formData);
+      console.log(response);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue('failed to connect');
+    }
+  },
+);
+
+export const deleteComment = createAsyncThunk(
+  'comments/deleteComment',
+  async ({ id, photoId, commentId }, thunkAPI) => {
+    try {
+      setHeaders();
+
+      const response = await axios.delete(`${baseURL}/photos/${photoId}/comments/${commentId}/replies/${id}`);
+      console.log(response);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue('failed to connect');
+    }
+  },
+);
+
+export const deleteReply = createAsyncThunk(
+  'comments/deleteReply',
+  async ({ id, photoId }, thunkAPI) => {
+    try {
+      setHeaders();
+
+      const response = await axios.delete(`${baseURL}/photos/${photoId}/comments/${id}`);
+      console.log(response);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue('failed to connect');
+    }
+  },
+);
+
 const initialState = {
   comments: [],
+  replies: [],
   isLoading: true,
   error: undefined,
 };
@@ -55,6 +116,19 @@ const commentSlice = createSlice({
         state.isLoading = false;
         state.error = payload;
       })
+    // Fetch Replies
+      .addCase(fetchReplies.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchReplies.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.replies = payload;
+        console.log('replies payload:', state.replies);
+      })
+      .addCase(fetchReplies.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
     // Create Comment
       .addCase(createComment.pending, (state) => {
         state.isLoading = true;
@@ -64,6 +138,42 @@ const commentSlice = createSlice({
         console.log(payload);
       })
       .addCase(createComment.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+    // Create Reply
+      .addCase(createReply.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createReply.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        console.log(payload);
+      })
+      .addCase(createReply.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+    // Delete Comment
+      .addCase(deleteComment.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteComment.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        console.log(payload);
+      })
+      .addCase(deleteComment.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+    // Delete Reply
+      .addCase(deleteReply.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteReply.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        console.log(payload);
+      })
+      .addCase(deleteReply.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
       });
