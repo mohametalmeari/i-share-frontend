@@ -3,7 +3,8 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PhotoCard from '../components/PhotoCard';
 import { fetchPhoto } from '../redux/posts/photoSlice';
-import CommentForm from '../components/CommentForm';
+// import CommentForm from '../components/CommentForm';
+import Comments from '../components/Comments';
 
 const ShowPhoto = () => {
   const id = +useParams().id;
@@ -26,7 +27,7 @@ const ShowPhoto = () => {
         navigator={false}
         archive={photo.archive}
       />
-      <CommentForm
+      <Comments
         photoId={id}
       />
       <br />

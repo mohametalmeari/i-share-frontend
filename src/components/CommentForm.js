@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { createComment } from '../redux/posts/commentSlice';
+import { createComment, fetchComments } from '../redux/posts/commentSlice';
 
 const CommentForm = ({ photoId }) => {
   const dispatch = useDispatch();
@@ -14,7 +14,8 @@ const CommentForm = ({ photoId }) => {
   };
 
   const handleComment = async () => {
-    dispatch(createComment({ formData, photoId }));
+    await dispatch(createComment({ formData, photoId }));
+    dispatch(fetchComments(photoId));
   };
   return (
     <>
