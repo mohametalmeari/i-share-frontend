@@ -91,8 +91,25 @@ export const deleteReply = createAsyncThunk(
   },
 );
 
+export const likeComment = createAsyncThunk(
+  'comments/likeComment',
+  async ({ id, photoId, liked }, thunkAPI) => {
+    try {
+      setHeaders();
+      const response = liked
+        ? await axios.delete(`${baseURL}/photos/${photoId}/comments/${id}/unlike`)
+        : await axios.post(`${baseURL}/photos/${photoId}/comments/${id}/like`);
+
+      return { liked: response.data.liked, likes: response.data.likes, id };
+    } catch (error) {
+      return thunkAPI.rejectWithValue('failed to like');
+    }
+  },
+);
+
 const initialState = {
   comments: [],
+  comment: {},
   replies: [],
   isLoading: true,
   error: undefined,
@@ -174,6 +191,28 @@ const commentSlice = createSlice({
         console.log(payload);
       })
       .addCase(deleteReply.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+
+    // Like Photo
+      .addCase(likeComment.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(likeComment.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.comments = state.comments.map((obj) => (obj.id === payload.id
+          ? { ...obj, liked: payload.liked, likes: (payload.liked ? obj.likes + 1 : obj.likes - 1) }
+          : obj));
+        if (state.comment.id === payload.id) {
+          state.comment = {
+            ...state.comment,
+            liked: payload.liked,
+            likes: payload.likes,
+          };
+        }
+      })
+      .addCase(likeComment.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
       });

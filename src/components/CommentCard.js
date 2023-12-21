@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { deleteComment, fetchComments, fetchReplies } from '../redux/posts/commentSlice';
+import {
+  deleteComment, fetchComments, fetchReplies, likeComment,
+} from '../redux/posts/commentSlice';
 import ReplyCard from './ReplyCard';
 import ReplyForm from './ReplyForm';
 
@@ -29,7 +31,9 @@ const CommentCard = ({
   const toggleShowReplies = () => {
     setShowReply({ ...showReply, replies: !showReply.replies });
   };
-
+  const handleLike = async () => {
+    dispatch(likeComment({ id, photoId, liked }));
+  };
   return (
     <>
       {id}
@@ -40,8 +44,10 @@ const CommentCard = ({
       ,
       {likes}
       ,
-      {liked}
-      ,
+      <button type="button" onClick={handleLike}>
+        {liked ? 'Unlike' : 'Like'}
+      </button>
+
       <button type="button" onClick={toggleShowReplyForm}>
         Reply from
       </button>

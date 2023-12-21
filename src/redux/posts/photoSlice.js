@@ -67,7 +67,7 @@ export const likePhoto = createAsyncThunk(
         ? await axios.delete(`${baseURL}/photos/${id}/unlike`)
         : await axios.post(`${baseURL}/photos/${id}/like`);
 
-      return { liked: response.data.liked, id };
+      return { liked: response.data.liked, id, likes: response.data.likes };
     } catch (error) {
       return thunkAPI.rejectWithValue('failed to like');
     }
@@ -163,13 +163,13 @@ const photoSlice = createSlice({
       .addCase(likePhoto.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.photos = state.photos.map((obj) => (obj.id === payload.id
-          ? { ...obj, liked: payload.liked, likes: (payload.liked ? obj.likes + 1 : obj.likes - 1) }
+          ? { ...obj, liked: payload.liked, likes: payload.likes }
           : obj));
         if (state.photo.id === payload.id) {
           state.photo = {
             ...state.photo,
             liked: payload.liked,
-            likes: (payload.liked ? state.photo.likes + 1 : state.photo.likes - 1),
+            likes: payload.likes,
           };
         }
       })
