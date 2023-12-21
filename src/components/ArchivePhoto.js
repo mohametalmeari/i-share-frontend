@@ -1,17 +1,23 @@
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
+// import { useNavigate } from 'react-router-dom';
 import { archivePhoto } from '../redux/posts/photoSlice';
 
-const ArchivePhoto = ({ id }) => {
+const ArchivePhoto = ({ id, archive }) => {
   const dispatch = useDispatch();
+  // const navigate = useNavigate();
 
   const handleArchive = async () => {
-    dispatch(archivePhoto(id));
+    try {
+      await dispatch(archivePhoto(id));
+    } catch (error) {
+      console.error('An error occurred during deletion:', error);
+    }
   };
   return (
     <>
       <button type="button" onClick={handleArchive}>
-        Archive
+        {archive ? 'Unarchive' : 'Archive'}
       </button>
     </>
   );
@@ -19,4 +25,9 @@ const ArchivePhoto = ({ id }) => {
 export default ArchivePhoto;
 ArchivePhoto.propTypes = {
   id: PropTypes.number.isRequired,
+  archive: PropTypes.bool,
+};
+
+ArchivePhoto.defaultProps = {
+  archive: false,
 };

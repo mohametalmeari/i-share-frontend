@@ -3,9 +3,10 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PhotoCard from '../components/PhotoCard';
 import { fetchPhoto } from '../redux/posts/photoSlice';
+import CommentForm from '../components/CommentForm';
 
 const ShowPhoto = () => {
-  const { id } = useParams();
+  const id = +useParams().id;
   const dispatch = useDispatch();
   const { photo } = useSelector((state) => state.photo);
   useEffect(() => {
@@ -15,7 +16,7 @@ const ShowPhoto = () => {
   return (
     <div>
       <PhotoCard
-        id={Number(id)}
+        id={id}
         name={photo.user.name}
         imageUrl={photo.image_url}
         caption={photo.caption}
@@ -23,6 +24,10 @@ const ShowPhoto = () => {
         liked={photo.liked}
         control={photo.user.control}
         navigator={false}
+        archive={photo.archive}
+      />
+      <CommentForm
+        photoId={id}
       />
       <br />
     </div>

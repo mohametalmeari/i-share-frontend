@@ -5,11 +5,10 @@ import ArchivePhoto from './ArchivePhoto';
 import LikePhoto from './LikePhoto';
 
 const PhotoCard = ({
-  id, name, imageUrl, caption, likes, liked, control, navigator,
+  id, name, imageUrl, caption, likes, liked, control, navigator, archive,
 }) => (
   <div>
     <p>
-
       {name}
     </p>
     {navigator ? (
@@ -29,14 +28,15 @@ const PhotoCard = ({
       liked={liked}
     />
     {control && (
-    <>
-      <DeletePhoto
-        id={id}
-      />
-      <ArchivePhoto
-        id={id}
-      />
-    </>
+      <>
+        <DeletePhoto
+          id={id}
+        />
+        <ArchivePhoto
+          id={id}
+          archive={archive}
+        />
+      </>
 
     )}
   </div>
@@ -52,4 +52,8 @@ PhotoCard.propTypes = {
   liked: PropTypes.bool.isRequired,
   control: PropTypes.bool.isRequired,
   navigator: PropTypes.bool.isRequired,
+  archive: PropTypes.bool,
+};
+PhotoCard.defaultProps = {
+  archive: false,
 };

@@ -147,6 +147,10 @@ const photoSlice = createSlice({
         if (payload.archive) {
           state.photos = state.photos.filter((obj) => (obj.id !== payload.photoId));
         }
+        state.photo = {
+          ...state.photo,
+          archive: payload.archive,
+        };
       })
       .addCase(archivePhoto.rejected, (state, { payload }) => {
         state.isLoading = false;
