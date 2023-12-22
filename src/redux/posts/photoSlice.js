@@ -92,25 +92,33 @@ const initialState = {
   photo: {
     id: 0, image_url: '', caption: '', likes: 0, liked: false, user: { name: '', username: '', control: false },
   },
-  isLoading: true,
+  isLoading: false,
   error: undefined,
 };
 
 const photoSlice = createSlice({
   name: 'photo',
   initialState,
+  reducers: {
+    resetPhoto: (state) => {
+      state.photo = {
+        id: 0, image_url: '', caption: '', likes: 0, liked: false, user: { name: '', username: '', control: false },
+      };
+    },
+  },
   extraReducers: (builder) => {
     builder
     // Fetch Photos
-      .addCase(fetchPhotos.pending, () => {
-        // state.isLoading = true;
+      .addCase(fetchPhotos.pending, (state) => {
+        state.isLoading = true;
       })
       .addCase(fetchPhotos.fulfilled, (state, { payload }) => {
-        // state.isLoading = false;
+        state.isLoading = false;
+        state.error = undefined;
         state.photos = payload;
       })
       .addCase(fetchPhotos.rejected, (state, { payload }) => {
-        // state.isLoading = false;
+        state.isLoading = false;
         state.error = payload;
       })
     // Create Photo
@@ -139,11 +147,9 @@ const photoSlice = createSlice({
         state.error = payload;
       })
     // Archive Photo
-      .addCase(archivePhoto.pending, (state) => {
-        state.isLoading = true;
+      .addCase(archivePhoto.pending, () => {
       })
       .addCase(archivePhoto.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
         if (payload.archive) {
           state.photos = state.photos.filter((obj) => (obj.id !== payload.photoId));
         }
@@ -153,15 +159,12 @@ const photoSlice = createSlice({
         };
       })
       .addCase(archivePhoto.rejected, (state, { payload }) => {
-        state.isLoading = false;
         state.error = payload;
       })
     // Like Photo
-      .addCase(likePhoto.pending, (state) => {
-        state.isLoading = true;
+      .addCase(likePhoto.pending, () => {
       })
       .addCase(likePhoto.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
         state.photos = state.photos.map((obj) => (obj.id === payload.id
           ? { ...obj, liked: payload.liked, likes: payload.likes }
           : obj));
@@ -174,7 +177,6 @@ const photoSlice = createSlice({
         }
       })
       .addCase(likePhoto.rejected, (state, { payload }) => {
-        state.isLoading = false;
         state.error = payload;
       })
     // Fetch Photo
@@ -192,5 +194,7 @@ const photoSlice = createSlice({
   },
 
 });
+
+export const { resetPhoto } = photoSlice.actions;
 
 export default photoSlice.reducer;
