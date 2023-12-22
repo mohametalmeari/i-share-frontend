@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useState } from 'react';
 import {
   deleteComment, fetchComments, fetchReplies, likeComment,
 } from '../redux/posts/commentSlice';
@@ -11,24 +11,21 @@ const CommentCard = ({
   id, photoId, name, content, likes, liked, control,
 }) => {
   const [showReply, setShowReply] = useState({ form: false, replies: false });
+  const [replies, setReplies] = useState([]);
   const dispatch = useDispatch();
   const handleDelete = async () => {
     await dispatch(deleteComment({ id, photoId }));
     dispatch(fetchComments(photoId));
   };
 
-  const { replies } = useSelector((state) => state.comment);
-  useEffect(() => {
-    dispatch(fetchReplies({ photoId, commentId: id }));
-    console.log('replies', replies);
-    console.log('-----');
-  }, []);
-
   const toggleShowReplyForm = () => {
     setShowReply({ ...showReply, form: !showReply.form });
   };
 
-  const toggleShowReplies = () => {
+  const toggleShowReplies = async () => {
+    if (!showReply.replies) {
+      setReplies((await dispatch(fetchReplies({ photoId, commentId: id }))).payload.replies);
+    }
     setShowReply({ ...showReply, replies: !showReply.replies });
   };
   const handleLike = async () => {

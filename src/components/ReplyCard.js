@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { deleteComment } from '../redux/posts/commentSlice';
+import { deleteComment, likeReply } from '../redux/posts/commentSlice';
 
 const ReplyCard = ({
   id, photoId, commentId, name, content, likes, liked, control,
@@ -9,7 +9,11 @@ const ReplyCard = ({
   const handleDelete = async () => {
     await dispatch(deleteComment({ id, photoId, commentId }));
   };
-
+  const handleLike = async () => {
+    dispatch(likeReply({
+      id, photoId, commentId, liked,
+    }));
+  };
   return (
     <div>
       {id}
@@ -21,7 +25,9 @@ const ReplyCard = ({
       {likes}
       ,
       {liked}
-
+      <button type="button" onClick={handleLike}>
+        {liked ? 'Unlike' : 'Like'}
+      </button>
       {control && (
       <button type="button" onClick={handleDelete}>
         Delete reply

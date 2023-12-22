@@ -23,8 +23,8 @@ export const fetchReplies = createAsyncThunk(
       setHeaders();
 
       const response = await axios.get(`${baseURL}/photos/${photoId}/comments/${commentId}/replies`);
-      console.log('fetch replies:', response.data);
-      return response.data;
+      console.log('fetched replies:', response.data);
+      return { replies: response.data, commentId };
     } catch (error) {
       return thunkAPI.rejectWithValue('failed to connect');
     }
@@ -107,10 +107,29 @@ export const likeComment = createAsyncThunk(
   },
 );
 
+export const likeReply = createAsyncThunk(
+  'comments/likeReply',
+  async ({
+    id, photoId, commentId, liked,
+  }, thunkAPI) => {
+    try {
+      setHeaders();
+      const response = liked
+        ? await axios.delete(`${baseURL}/photos/${photoId}/comments/${commentId}/replies/${id}/unlike`)
+        : await axios.post(`${baseURL}/photos/${photoId}/comments/${commentId}/replies/${id}/like`);
+
+      return { liked: response.data.liked, likes: response.data.likes, id };
+    } catch (error) {
+      return thunkAPI.rejectWithValue('failed to like');
+    }
+  },
+);
+
 const initialState = {
   comments: [],
   comment: {},
-  replies: [],
+  replies: [1, 2, 3],
+  commentReplies: [1, 2, 3],
   isLoading: true,
   error: undefined,
 };
@@ -139,8 +158,7 @@ const commentSlice = createSlice({
       })
       .addCase(fetchReplies.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        state.replies = payload;
-        console.log('replies payload:', state.replies);
+        console.log('replies test:', payload);
       })
       .addCase(fetchReplies.rejected, (state, { payload }) => {
         state.isLoading = false;
@@ -194,15 +212,14 @@ const commentSlice = createSlice({
         state.isLoading = false;
         state.error = payload;
       })
-
-    // Like Photo
+    // Like Comment
       .addCase(likeComment.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(likeComment.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.comments = state.comments.map((obj) => (obj.id === payload.id
-          ? { ...obj, liked: payload.liked, likes: (payload.liked ? obj.likes + 1 : obj.likes - 1) }
+          ? { ...obj, liked: payload.liked, likes: payload.likes }
           : obj));
         if (state.comment.id === payload.id) {
           state.comment = {
@@ -213,6 +230,27 @@ const commentSlice = createSlice({
         }
       })
       .addCase(likeComment.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+    // Like Reply
+      .addCase(likeReply.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(likeReply.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.replies = state.replies.map((obj) => (obj.id === payload.id
+          ? { ...obj, liked: payload.liked, likes: payload.likes }
+          : obj));
+        if (state.comment.id === payload.id) {
+          state.comment = {
+            ...state.comment,
+            liked: payload.liked,
+            likes: payload.likes,
+          };
+        }
+      })
+      .addCase(likeReply.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
       });
