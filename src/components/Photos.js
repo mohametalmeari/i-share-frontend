@@ -9,7 +9,6 @@ const Photos = () => {
 
   useEffect(() => {
     dispatch(fetchPhotos());
-    console.log(photos);
   }, [dispatch]);
   return (
     <>

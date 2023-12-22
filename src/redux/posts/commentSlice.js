@@ -23,7 +23,6 @@ export const fetchReplies = createAsyncThunk(
       setHeaders();
 
       const response = await axios.get(`${baseURL}/photos/${photoId}/comments/${commentId}/replies`);
-      console.log('fetched replies:', response.data);
       return { replies: response.data, commentId };
     } catch (error) {
       return thunkAPI.rejectWithValue('failed to connect');
@@ -38,7 +37,6 @@ export const createComment = createAsyncThunk(
       setHeaders();
 
       const response = await axios.post(`${baseURL}/photos/${photoId}/comments`, formData);
-      console.log(response);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue('failed to connect');
@@ -53,7 +51,6 @@ export const createReply = createAsyncThunk(
       setHeaders();
 
       const response = await axios.post(`${baseURL}/photos/${photoId}/comments/${commentId}/replies`, formData);
-      console.log(response);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue('failed to connect');
@@ -68,7 +65,6 @@ export const deleteComment = createAsyncThunk(
       setHeaders();
 
       const response = await axios.delete(`${baseURL}/photos/${photoId}/comments/${commentId}/replies/${id}`);
-      console.log(response);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue('failed to connect');
@@ -83,7 +79,6 @@ export const deleteReply = createAsyncThunk(
       setHeaders();
 
       const response = await axios.delete(`${baseURL}/photos/${photoId}/comments/${id}`);
-      console.log(response);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue('failed to connect');
@@ -146,7 +141,6 @@ const commentSlice = createSlice({
       .addCase(fetchComments.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.comments = payload;
-        console.log(state.comments);
       })
       .addCase(fetchComments.rejected, (state, { payload }) => {
         state.isLoading = false;
@@ -156,9 +150,8 @@ const commentSlice = createSlice({
       .addCase(fetchReplies.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(fetchReplies.fulfilled, (state, { payload }) => {
+      .addCase(fetchReplies.fulfilled, (state) => {
         state.isLoading = false;
-        console.log('replies test:', payload);
       })
       .addCase(fetchReplies.rejected, (state, { payload }) => {
         state.isLoading = false;
@@ -168,9 +161,8 @@ const commentSlice = createSlice({
       .addCase(createComment.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createComment.fulfilled, (state, { payload }) => {
+      .addCase(createComment.fulfilled, (state) => {
         state.isLoading = false;
-        console.log(payload);
       })
       .addCase(createComment.rejected, (state, { payload }) => {
         state.isLoading = false;
@@ -180,9 +172,8 @@ const commentSlice = createSlice({
       .addCase(createReply.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createReply.fulfilled, (state, { payload }) => {
+      .addCase(createReply.fulfilled, (state) => {
         state.isLoading = false;
-        console.log(payload);
       })
       .addCase(createReply.rejected, (state, { payload }) => {
         state.isLoading = false;
@@ -192,9 +183,8 @@ const commentSlice = createSlice({
       .addCase(deleteComment.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(deleteComment.fulfilled, (state, { payload }) => {
+      .addCase(deleteComment.fulfilled, (state) => {
         state.isLoading = false;
-        console.log(payload);
       })
       .addCase(deleteComment.rejected, (state, { payload }) => {
         state.isLoading = false;
@@ -204,9 +194,8 @@ const commentSlice = createSlice({
       .addCase(deleteReply.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(deleteReply.fulfilled, (state, { payload }) => {
+      .addCase(deleteReply.fulfilled, (state) => {
         state.isLoading = false;
-        console.log(payload);
       })
       .addCase(deleteReply.rejected, (state, { payload }) => {
         state.isLoading = false;

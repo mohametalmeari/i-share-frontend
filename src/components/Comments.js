@@ -11,9 +11,7 @@ const Comments = ({ photoId }) => {
 
   useEffect(() => {
     dispatch(fetchComments(photoId));
-    console.log('in comments: ', comments);
-    console.log('-----');
-  }, []);
+  }, [dispatch, photoId]);
 
   return (
     <>
