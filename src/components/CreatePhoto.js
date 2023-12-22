@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { createPhoto } from '../redux/posts/photoSlice';
 
 const CreatePhoto = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state.photo);
   const [formData, setFormData] = useState({
     caption: 'a new image',
     image_url: 'a new image url',
@@ -19,6 +20,14 @@ const CreatePhoto = () => {
     await dispatch(createPhoto(formData));
     navigate('/');
   };
+
+  if (isLoading) {
+    return (
+      <p>
+        Creating Photo ...
+      </p>
+    );
+  }
   return (
     <>
       <input

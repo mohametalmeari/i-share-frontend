@@ -2,17 +2,25 @@ import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PhotoCard from '../components/PhotoCard';
-import { fetchPhoto } from '../redux/posts/photoSlice';
-// import CommentForm from '../components/CommentForm';
+import { fetchPhoto, resetPhoto } from '../redux/posts/photoSlice';
 import Comments from '../components/Comments';
 
 const ShowPhoto = () => {
   const id = +useParams().id;
   const dispatch = useDispatch();
-  const { photo } = useSelector((state) => state.photo);
+  const { photo, isLoading } = useSelector((state) => state.photo);
   useEffect(() => {
+    resetPhoto();
     dispatch(fetchPhoto(id));
   }, [dispatch, id]);
+
+  if (isLoading) {
+    return (
+      <p>
+        is loading
+      </p>
+    );
+  }
 
   return (
     <div>

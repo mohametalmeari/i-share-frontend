@@ -1,43 +1,38 @@
 import PropTypes from 'prop-types';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import LikePhoto from './LikePhoto';
-import { archivePhoto, deletePhoto } from '../redux/posts/photoSlice';
+import { archivePhoto, deletePhoto, likePhoto } from '../redux/posts/photoSlice';
 
 const PhotoCard = ({
   id, name, imageUrl, caption, likes, liked, control, navigator, archive,
 }) => {
   const dispatch = useDispatch();
-  const handleArchive = async () => {
-    try {
-      await dispatch(archivePhoto(id));
-    } catch (error) {
-      console.error(error);
-    }
-  };
   const navigate = useNavigate();
-  const handleDelete = async () => {
-    try {
-      const { payload } = await dispatch(deletePhoto(id));
 
-      if (payload && payload.deleted) {
-        navigate('/');
-      }
-    } catch (error) {
-      console.error(error);
+  const handleArchive = () => {
+    dispatch(archivePhoto(id));
+  };
+  const handleDelete = async () => {
+    const { payload } = await dispatch(deletePhoto(id));
+    if (payload && payload.deleted) {
+      navigate('/');
     }
   };
 
+  const handleLike = () => {
+    dispatch(likePhoto({ id, liked }));
+  };
   return (
     <div>
       <p>
         {name}
       </p>
-      {navigator ? (
-        <NavLink to={`photos/${id}`}>
-          <img src={imageUrl} alt="i-share" />
-        </NavLink>
-      )
+      {navigator
+        ? (
+          <NavLink to={`photos/${id}`}>
+            <img src={imageUrl} alt="i-share" />
+          </NavLink>
+        )
         : <img src={imageUrl} alt="i-share" />}
       <p>
         {caption}
@@ -45,10 +40,9 @@ const PhotoCard = ({
       <span>
         {likes}
       </span>
-      <LikePhoto
-        id={id}
-        liked={liked}
-      />
+      <button type="button" onClick={handleLike}>
+        {liked ? 'Unlike' : 'Like'}
+      </button>
       {control && (
       <>
         <button type="button" onClick={handleDelete}>

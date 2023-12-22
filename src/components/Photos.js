@@ -5,11 +5,27 @@ import PhotoCard from './PhotoCard';
 
 const Photos = () => {
   const dispatch = useDispatch();
-  const { photos } = useSelector((state) => state.photo);
+  const { photos, isLoading, error } = useSelector((state) => state.photo);
 
   useEffect(() => {
     dispatch(fetchPhotos());
   }, [dispatch]);
+
+  if (isLoading) {
+    return (
+      <p>
+        Loading Photos
+      </p>
+    );
+  }
+
+  if (error) {
+    return (
+      <p>
+        {error}
+      </p>
+    );
+  }
   return (
     <>
       {photos.map((photo) => (
