@@ -1,7 +1,7 @@
 import CreatePhoto from '../components/CreatePhoto';
 
 const NewPost = () => (
-  <div>
+  <div className="user-form">
     <CreatePhoto />
   </div>
 );

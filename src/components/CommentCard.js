@@ -8,11 +8,24 @@ import ReplyCard from './ReplyCard';
 import ReplyForm from './ReplyForm';
 
 const CommentCard = ({
-  id, photoId, name, content, likes, liked, control,
+  id, photoId, name, content, likes, liked, control, repliesCount,
 }) => {
   const [showReply, setShowReply] = useState({ form: false, replies: false });
   const [replies, setReplies] = useState([]);
   const dispatch = useDispatch();
+
+  const refreshLikes = (payload) => {
+    setReplies(replies.map((obj) => (obj.id === payload.id
+      ? { ...obj, liked: payload.liked, likes: payload.likes }
+      : obj)));
+  };
+
+  const removeFromReplies = (del, id) => {
+    if (del) {
+      setReplies(replies.filter((obj) => obj.id !== id));
+    }
+  };
+
   const handleDelete = async () => {
     await dispatch(deleteComment({ id, photoId }));
     dispatch(fetchComments(photoId));
@@ -32,54 +45,77 @@ const CommentCard = ({
     dispatch(likeComment({ id, photoId, liked }));
   };
   return (
-    <>
-      {id}
-      ,
-      {name}
-      :
-      {content}
-      ,
-      {likes}
-      ,
-      <button type="button" onClick={handleLike}>
-        {liked ? 'Unlike' : 'Like'}
-      </button>
-
-      <button type="button" onClick={toggleShowReplyForm}>
-        Reply from
-      </button>
-      {showReply.form && (
+    <div className="comment-container">
+      <div>
+        <b>
+          {name}
+          {': '}
+        </b>
+        <span>
+          {content}
+        </span>
+      </div>
+      <div className="interaction-counts">
+        <span>
+          {`${likes} Likes, `}
+        </span>
+        <span>
+          {`${repliesCount} Replies`}
+        </span>
+      </div>
+      <div className="comment-interact-container">
+        <button className="link comment-interact" type="button" onClick={handleLike}>
+          {liked ? 'Unlike' : 'Like'}
+        </button>
+        {' - '}
+        <button className="link comment-interact" type="button" onClick={toggleShowReplyForm}>
+          Reply
+        </button>
+        {repliesCount !== 0 && (
+          <>
+            {' - '}
+            <button className="link comment-interact" type="button" onClick={toggleShowReplies}>
+              {!showReply.replies
+                ? 'Show replies'
+                : 'Hide replies'}
+            </button>
+          </>
+        )}
+        {control && (
+        <>
+          {' - '}
+          <button className="link comment-interact" type="button" onClick={handleDelete}>
+            Delete
+          </button>
+        </>
+        )}
+      </div>
+      <div className="replies-container">
+        {showReply.form && (
         <ReplyForm
           photoId={photoId}
           commentId={id}
           setShowReply={setShowReply}
+          setReplies={setReplies}
         />
-      )}
-
-      <button type="button" onClick={toggleShowReplies}>
-        Show replies
-      </button>
-      {showReply.replies && replies.map((reply) => (
-        <ReplyCard
-          key={reply.id}
-          id={reply.id}
-          photoId={photoId}
-          commentId={id}
-          name={reply.user.name}
-          content={reply.content}
-          likes={reply.likes}
-          liked={reply.liked}
-          control={reply.user.control}
-        />
-      ))}
-
-      {control && (
-      <button type="button" onClick={handleDelete}>
-        Delete comment
-      </button>
-      )}
-      <br />
-    </>
+        )}
+        {showReply.replies && replies.map((reply) => (
+          <ReplyCard
+            key={reply.id}
+            id={reply.id}
+            photoId={photoId}
+            commentId={id}
+            name={reply.user.name}
+            content={reply.content}
+            likes={reply.likes}
+            liked={reply.liked}
+            control={reply.user.control}
+            refreshLikes={refreshLikes}
+            removeFromReplies={removeFromReplies}
+          />
+        ))}
+      </div>
+    </div>
   );
 };
 
@@ -91,6 +127,7 @@ CommentCard.propTypes = {
   name: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,
   likes: PropTypes.number.isRequired,
+  repliesCount: PropTypes.number.isRequired,
   liked: PropTypes.bool.isRequired,
   control: PropTypes.bool.isRequired,
 };

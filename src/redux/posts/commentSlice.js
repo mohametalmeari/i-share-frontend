@@ -60,11 +60,11 @@ export const createReply = createAsyncThunk(
 
 export const deleteComment = createAsyncThunk(
   'comments/deleteComment',
-  async ({ id, photoId, commentId }, thunkAPI) => {
+  async ({ id, photoId }, thunkAPI) => {
     try {
       setHeaders();
 
-      const response = await axios.delete(`${baseURL}/photos/${photoId}/comments/${commentId}/replies/${id}`);
+      const response = await axios.delete(`${baseURL}/photos/${photoId}/comments/${id}`);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue('failed to connect');
@@ -74,11 +74,10 @@ export const deleteComment = createAsyncThunk(
 
 export const deleteReply = createAsyncThunk(
   'comments/deleteReply',
-  async ({ id, photoId }, thunkAPI) => {
+  async ({ id, photoId, commentId }, thunkAPI) => {
     try {
       setHeaders();
-
-      const response = await axios.delete(`${baseURL}/photos/${photoId}/comments/${id}`);
+      const response = await axios.delete(`${baseURL}/photos/${photoId}/comments/${commentId}/replies/${id}`);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue('failed to connect');
@@ -123,8 +122,6 @@ export const likeReply = createAsyncThunk(
 const initialState = {
   comments: [],
   comment: {},
-  replies: [1, 2, 3],
-  commentReplies: [1, 2, 3],
   isLoading: true,
   error: undefined,
 };
@@ -226,18 +223,8 @@ const commentSlice = createSlice({
       .addCase(likeReply.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(likeReply.fulfilled, (state, { payload }) => {
+      .addCase(likeReply.fulfilled, (state) => {
         state.isLoading = false;
-        state.replies = state.replies.map((obj) => (obj.id === payload.id
-          ? { ...obj, liked: payload.liked, likes: payload.likes }
-          : obj));
-        if (state.comment.id === payload.id) {
-          state.comment = {
-            ...state.comment,
-            liked: payload.liked,
-            likes: payload.likes,
-          };
-        }
       })
       .addCase(likeReply.rejected, (state, { payload }) => {
         state.isLoading = false;

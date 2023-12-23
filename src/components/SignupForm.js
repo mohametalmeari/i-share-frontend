@@ -23,42 +23,49 @@ const SignupForm = () => {
   return (
     <>
       <input
+        className="input-field"
         type="email"
         value={formData.email}
         placeholder="Email"
         onChange={handleChange('email')}
       />
       <input
-        type="password"
-        value={formData.password}
-        placeholder="Password"
-        onChange={handleChange('password')}
-      />
-      <input
-        type="password"
-        value={formData.password_confirmation}
-        placeholder="Password Confirmation"
-        onChange={handleChange('password_confirmation')}
-      />
-      <input
+        className="input-field"
         type="text"
         value={formData.username}
         placeholder="Username"
         onChange={handleChange('username')}
       />
       <input
+        className="input-field"
         type="text"
         value={formData.name}
         placeholder="Name"
         onChange={handleChange('name')}
       />
       <input
+        className="input-field"
         type="text"
         value={formData.image_url}
         placeholder="Image url"
         onChange={handleChange('image_url')}
       />
-      <button type="button" onClick={handleSignup}>
+      <input
+        className="input-field"
+        type="password"
+        value={formData.password}
+        placeholder="Password"
+        onChange={handleChange('password')}
+      />
+      <input
+        className="input-field"
+        type="password"
+        value={formData.password_confirmation}
+        placeholder="Password Confirmation"
+        onChange={handleChange('password_confirmation')}
+      />
+
+      <button className="form-btn" type="button" onClick={handleSignup}>
         Sign Up
       </button>
     </>

@@ -14,17 +14,18 @@ const loggedOutLinks = [
 const Navbar = () => {
   const { loggedIn } = useSelector((state) => state.auth);
   return (
-    <ul>
-      {
+    <nav>
+      <ul className="nav-list">
+        {
       loggedIn ? loggedOutLinks.map((link) => (
-        <li key={link.text}>
+        <li className="nav-link" key={link.text}>
           <NavLink to={link.path}>
             {link.text}
           </NavLink>
         </li>
       ))
         : loggedInLinks.map((link) => (
-          <li key={link.text}>
+          <li className="nav-link" key={link.text}>
             <NavLink to={link.path}>
               {link.text}
             </NavLink>
@@ -32,12 +33,13 @@ const Navbar = () => {
         ))
 
     }
-      {loggedIn && (
-      <li>
-        <Logout />
-      </li>
-      )}
-    </ul>
+        {loggedIn && (
+        <li className="nav-link">
+          <Logout />
+        </li>
+        )}
+      </ul>
+    </nav>
   );
 };
 

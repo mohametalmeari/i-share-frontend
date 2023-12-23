@@ -1,7 +1,7 @@
 import SignupForm from '../components/SignupForm';
 
 const Signup = () => (
-  <div>
+  <div className="user-form">
     <SignupForm />
   </div>
 );

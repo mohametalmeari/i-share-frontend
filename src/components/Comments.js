@@ -14,7 +14,7 @@ const Comments = ({ photoId }) => {
   }, [dispatch, photoId]);
 
   return (
-    <>
+    <div className="comments-container">
       <CommentForm
         photoId={photoId}
       />
@@ -27,11 +27,12 @@ const Comments = ({ photoId }) => {
           name={comment.user.name}
           content={comment.content}
           likes={comment.likes}
+          repliesCount={comment.replies}
           liked={comment.liked}
           control={comment.user.control}
         />
       ))}
-    </>
+    </div>
   );
 };
 export default Comments;

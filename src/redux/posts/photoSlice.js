@@ -87,11 +87,20 @@ export const fetchPhoto = createAsyncThunk(
   },
 );
 
+const photo = {
+  id: 0,
+  image_url: '',
+  caption: '',
+  likes: 0,
+  liked: false,
+  user: {
+    name: '', username: '', control: false, profile_image: '',
+  },
+};
+
 const initialState = {
   photos: [],
-  photo: {
-    id: 0, image_url: '', caption: '', likes: 0, liked: false, user: { name: '', username: '', control: false },
-  },
+  photo,
   isLoading: false,
   error: undefined,
 };
@@ -101,9 +110,7 @@ const photoSlice = createSlice({
   initialState,
   reducers: {
     resetPhoto: (state) => {
-      state.photo = {
-        id: 0, image_url: '', caption: '', likes: 0, liked: false, user: { name: '', username: '', control: false },
-      };
+      state.photo = photo;
     },
   },
   extraReducers: (builder) => {

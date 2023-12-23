@@ -13,22 +13,24 @@ const CommentForm = ({ photoId }) => {
     setFormData({ ...formData, [field]: event.target.value });
   };
 
-  const handleComment = async () => {
-    await dispatch(createComment({ formData, photoId }));
-    dispatch(fetchComments(photoId));
+  const handleKeyDown = async (event) => {
+    if (event.key === 'Enter') {
+      await dispatch(createComment({ formData, photoId }));
+      dispatch(fetchComments(photoId));
+      setFormData({ content: '' });
+      event.target.blur();
+    }
   };
   return (
-    <>
-      <input
-        type="text"
+    <form className="comment-form">
+      <textarea
+        className="input-field"
         value={formData.content}
         placeholder="Your comment ... "
         onChange={handleChange('content')}
+        onKeyDown={handleKeyDown}
       />
-      <button type="button" onClick={handleComment}>
-        comment
-      </button>
-    </>
+    </form>
   );
 };
 export default CommentForm;

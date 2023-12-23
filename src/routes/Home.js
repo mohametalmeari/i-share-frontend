@@ -1,9 +1,8 @@
 import Photos from '../components/Photos';
 
 const Home = () => (
-  <div>
+  <div className="photos-container">
     <Photos />
-    <br />
   </div>
 );
 export default Home;

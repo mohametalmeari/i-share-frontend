@@ -1,39 +1,50 @@
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { deleteComment, likeReply } from '../redux/posts/commentSlice';
+import { deleteReply, likeReply } from '../redux/posts/commentSlice';
 
 const ReplyCard = ({
-  id, photoId, commentId, name, content, likes, liked, control,
+  id, photoId, commentId, name, content, likes, liked, control, refreshLikes, removeFromReplies,
 }) => {
   const dispatch = useDispatch();
   const handleDelete = async () => {
-    await dispatch(deleteComment({ id, photoId, commentId }));
+    const { payload } = await dispatch(deleteReply({ id, photoId, commentId }));
+    removeFromReplies(payload.message === 'deleted', id);
   };
   const handleLike = async () => {
-    dispatch(likeReply({
+    const { payload } = await dispatch(likeReply({
       id, photoId, commentId, liked,
     }));
+    refreshLikes(payload);
   };
   return (
     <div>
-      {id}
-      ,
-      {name}
-      :
-      {content}
-      ,
-      {likes}
-      ,
-      {liked}
-      <button type="button" onClick={handleLike}>
-        {liked ? 'Unlike' : 'Like'}
-      </button>
-      {control && (
-      <button type="button" onClick={handleDelete}>
-        Delete reply
-      </button>
-      )}
-      <br />
+      <div>
+        <b>
+          {name}
+          {': '}
+        </b>
+        <span>
+          {content}
+        </span>
+      </div>
+      <div className="interaction-counts">
+        <span>
+          {`${likes} Likes`}
+        </span>
+      </div>
+      <div className="comment-interact-container">
+        <button className="link comment-interact" type="button" onClick={handleLike}>
+          {liked ? 'Unlike' : 'Like'}
+        </button>
+        {control && (
+        <>
+          {' - '}
+          <button className="link comment-interact" type="button" onClick={handleDelete}>
+            Delete
+          </button>
+        </>
+        )}
+      </div>
     </div>
   );
 };
@@ -49,4 +60,6 @@ ReplyCard.propTypes = {
   likes: PropTypes.number.isRequired,
   liked: PropTypes.bool.isRequired,
   control: PropTypes.bool.isRequired,
+  refreshLikes: PropTypes.func.isRequired,
+  removeFromReplies: PropTypes.func.isRequired,
 };
