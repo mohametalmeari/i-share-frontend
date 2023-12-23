@@ -122,8 +122,6 @@ export const likeReply = createAsyncThunk(
 const initialState = {
   comments: [],
   comment: {},
-  replies: [1, 2, 3],
-  commentReplies: [1, 2, 3],
   isLoading: true,
   error: undefined,
 };
@@ -225,18 +223,8 @@ const commentSlice = createSlice({
       .addCase(likeReply.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(likeReply.fulfilled, (state, { payload }) => {
+      .addCase(likeReply.fulfilled, (state) => {
         state.isLoading = false;
-        state.replies = state.replies.map((obj) => (obj.id === payload.id
-          ? { ...obj, liked: payload.liked, likes: payload.likes }
-          : obj));
-        if (state.comment.id === payload.id) {
-          state.comment = {
-            ...state.comment,
-            liked: payload.liked,
-            likes: payload.likes,
-          };
-        }
       })
       .addCase(likeReply.rejected, (state, { payload }) => {
         state.isLoading = false;

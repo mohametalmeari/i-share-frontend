@@ -3,16 +3,18 @@ import { useDispatch } from 'react-redux';
 import { deleteReply, likeReply } from '../redux/posts/commentSlice';
 
 const ReplyCard = ({
-  id, photoId, commentId, name, content, likes, liked, control,
+  id, photoId, commentId, name, content, likes, liked, control, refreshLikes, removeFromReplies,
 }) => {
   const dispatch = useDispatch();
   const handleDelete = async () => {
-    await dispatch(deleteReply({ id, photoId, commentId }));
+    const { payload } = await dispatch(deleteReply({ id, photoId, commentId }));
+    removeFromReplies(payload.message === 'deleted', id);
   };
   const handleLike = async () => {
-    dispatch(likeReply({
+    const { payload } = await dispatch(likeReply({
       id, photoId, commentId, liked,
     }));
+    refreshLikes(payload);
   };
   return (
     <div>
@@ -58,4 +60,6 @@ ReplyCard.propTypes = {
   likes: PropTypes.number.isRequired,
   liked: PropTypes.bool.isRequired,
   control: PropTypes.bool.isRequired,
+  refreshLikes: PropTypes.func.isRequired,
+  removeFromReplies: PropTypes.func.isRequired,
 };

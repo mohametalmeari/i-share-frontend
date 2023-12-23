@@ -182,7 +182,7 @@ border-radius: 4px;
 .comments-container{
   display: flex;
   flex-direction: column;
-  gap: 50px;
+  gap: 24px;
 }
 
 .photo-container{
@@ -209,4 +209,11 @@ border-radius: 4px;
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+
+.replies-container{
+  padding-left: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }

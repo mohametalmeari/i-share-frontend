@@ -13,6 +13,19 @@ const CommentCard = ({
   const [showReply, setShowReply] = useState({ form: false, replies: false });
   const [replies, setReplies] = useState([]);
   const dispatch = useDispatch();
+
+  const refreshLikes = (payload) => {
+    setReplies(replies.map((obj) => (obj.id === payload.id
+      ? { ...obj, liked: payload.liked, likes: payload.likes }
+      : obj)));
+  };
+
+  const removeFromReplies = (del, id) => {
+    if (del) {
+      setReplies(replies.filter((obj) => obj.id !== id));
+    }
+  };
+
   const handleDelete = async () => {
     await dispatch(deleteComment({ id, photoId }));
     dispatch(fetchComments(photoId));
@@ -77,27 +90,31 @@ const CommentCard = ({
         </>
         )}
       </div>
-      {showReply.form && (
-      <ReplyForm
-        photoId={photoId}
-        commentId={id}
-        setShowReply={setShowReply}
-        setReplies={setReplies}
-      />
-      )}
-      {showReply.replies && replies.map((reply) => (
-        <ReplyCard
-          key={reply.id}
-          id={reply.id}
+      <div className="replies-container">
+        {showReply.form && (
+        <ReplyForm
           photoId={photoId}
           commentId={id}
-          name={reply.user.name}
-          content={reply.content}
-          likes={reply.likes}
-          liked={reply.liked}
-          control={reply.user.control}
+          setShowReply={setShowReply}
+          setReplies={setReplies}
         />
-      ))}
+        )}
+        {showReply.replies && replies.map((reply) => (
+          <ReplyCard
+            key={reply.id}
+            id={reply.id}
+            photoId={photoId}
+            commentId={id}
+            name={reply.user.name}
+            content={reply.content}
+            likes={reply.likes}
+            liked={reply.liked}
+            control={reply.user.control}
+            refreshLikes={refreshLikes}
+            removeFromReplies={removeFromReplies}
+          />
+        ))}
+      </div>
     </div>
   );
 };
