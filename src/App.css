@@ -48,6 +48,7 @@ main{
   margin: 16px;
   justify-content: center;
   flex-direction: column;
+  margin-bottom: 50px;
 }
 
 .user-form{ 
@@ -209,6 +210,9 @@ border-radius: 4px;
   display: flex;
   flex-direction: column;
   gap: 4px;
+  background-color: #efd3d7;
+  padding: 16px;
+  border-radius: 16px;
 }
 
 .replies-container{

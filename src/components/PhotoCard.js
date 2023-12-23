@@ -62,16 +62,20 @@ const PhotoCard = ({
       </p>
 
       <div className="control-container">
+        {archive || (
         <button className="icon-btn" type="button" onClick={handleLike}>
           {liked
             ? (<FilledStarIcon /> || 'Unlike')
             : (<EmptyStarIcon /> || 'Like')}
         </button>
+        )}
         {control && (
         <>
+          {archive || (
           <button className="icon-btn" type="button" onClick={handleDelete}>
             {<DeleteIcon /> || 'delete'}
           </button>
+          )}
           <button className="icon-btn" type="button" onClick={handleArchive}>
             {archive
               ? (<ArchivedIcon /> || 'Unarchive')
