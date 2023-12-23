@@ -16,9 +16,11 @@ const Layout = () => {
   }, [loggedIn, navigate, path]);
 
   return (
-    <div>
+    <div className="container">
       <Navbar />
-      <Outlet />
+      <main>
+        <Outlet />
+      </main>
     </div>
   );
 };

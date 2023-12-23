@@ -31,18 +31,20 @@ const CreatePhoto = () => {
   return (
     <>
       <input
+        className="input-field"
         type="text"
         value={formData.image_url}
         placeholder="image_url"
         onChange={handleChange('image_url')}
       />
       <input
+        className="input-field"
         type="text"
         value={formData.caption}
         placeholder="caption"
         onChange={handleChange('caption')}
       />
-      <button type="button" onClick={handleCreatePhoto}>
+      <button className="form-btn" type="button" onClick={handleCreatePhoto}>
         Create Photo
       </button>
     </>

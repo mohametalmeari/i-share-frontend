@@ -17,18 +17,20 @@ const LoginForm = () => {
   return (
     <>
       <input
+        className="input-field"
         type="email"
         value={formData.email}
         placeholder="Email"
         onChange={handleChange('email')}
       />
       <input
+        className="input-field"
         type="password"
         value={formData.password}
         placeholder="Password"
         onChange={handleChange('password')}
       />
-      <button type="button" onClick={handleLogin}>
+      <button className="form-btn" type="button" onClick={handleLogin}>
         Log in
       </button>
     </>
