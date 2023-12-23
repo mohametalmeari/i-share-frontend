@@ -30,6 +30,7 @@ const Photos = () => {
           profileImage={photo.user.profile_image}
           caption={photo.caption}
           likes={photo.likes}
+          comments={photo.comments}
           liked={photo.liked}
           control={photo.user.control}
           navigator

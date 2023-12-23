@@ -8,7 +8,7 @@ import {
 } from '../assets/icons';
 
 const PhotoCard = ({
-  id, name, imageUrl, caption, likes, liked, control, navigator, archive, profileImage,
+  id, name, imageUrl, caption, likes, liked, control, navigator, archive, profileImage, comments,
 }) => {
   const defaultImgUrl = 'https://cdn.vectorstock.com/i/preview-1x/82/99/no-image-available-like-missing-picture-vector-43938299.jpg';
   const defaultProfileUrl = 'https://t4.ftcdn.net/jpg/05/89/93/27/360_F_589932782_vQAEAZhHnq1QCGu5ikwrYaQD0Mmurm0N.jpg';
@@ -91,6 +91,17 @@ const PhotoCard = ({
         {likes === 1
           ? 'One star'
           : ''}
+        {', '}
+        {comments === 0
+          ? 'No comments'
+          : ''}
+        {comments > 1
+          ? `${comments} comments`
+          : ''}
+        {comments === 1
+          ? 'One comments'
+          : ''}
+
       </span>
     </div>
   );
@@ -104,6 +115,7 @@ PhotoCard.propTypes = {
   profileImage: PropTypes.string.isRequired,
   caption: PropTypes.string.isRequired,
   likes: PropTypes.number.isRequired,
+  comments: PropTypes.number,
   liked: PropTypes.bool.isRequired,
   control: PropTypes.bool.isRequired,
   navigator: PropTypes.bool.isRequired,
@@ -111,4 +123,5 @@ PhotoCard.propTypes = {
 };
 PhotoCard.defaultProps = {
   archive: false,
+  comments: 0,
 };

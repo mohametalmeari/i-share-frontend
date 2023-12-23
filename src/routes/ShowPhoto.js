@@ -27,22 +27,23 @@ const ShowPhoto = () => {
   }
 
   return (
-    <div>
+    <div className="photo-container">
       <PhotoCard
         id={id}
         name={photo.user.name}
         imageUrl={photo.image_url}
         caption={photo.caption}
         likes={photo.likes}
+        comments={photo.comments}
         liked={photo.liked}
         control={photo.user.control}
         navigator={false}
         archive={photo.archive}
+        profileImage={photo.user.profile_image}
       />
       <Comments
         photoId={id}
       />
-      <br />
     </div>
   );
 };

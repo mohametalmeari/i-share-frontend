@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { deleteComment, likeReply } from '../redux/posts/commentSlice';
+import { deleteReply, likeReply } from '../redux/posts/commentSlice';
 
 const ReplyCard = ({
   id, photoId, commentId, name, content, likes, liked, control,
 }) => {
   const dispatch = useDispatch();
   const handleDelete = async () => {
-    await dispatch(deleteComment({ id, photoId, commentId }));
+    await dispatch(deleteReply({ id, photoId, commentId }));
   };
   const handleLike = async () => {
     dispatch(likeReply({
@@ -16,24 +16,33 @@ const ReplyCard = ({
   };
   return (
     <div>
-      {id}
-      ,
-      {name}
-      :
-      {content}
-      ,
-      {likes}
-      ,
-      {liked}
-      <button type="button" onClick={handleLike}>
-        {liked ? 'Unlike' : 'Like'}
-      </button>
-      {control && (
-      <button type="button" onClick={handleDelete}>
-        Delete reply
-      </button>
-      )}
-      <br />
+      <div>
+        <b>
+          {name}
+          {': '}
+        </b>
+        <span>
+          {content}
+        </span>
+      </div>
+      <div className="interaction-counts">
+        <span>
+          {`${likes} Likes`}
+        </span>
+      </div>
+      <div className="comment-interact-container">
+        <button className="link comment-interact" type="button" onClick={handleLike}>
+          {liked ? 'Unlike' : 'Like'}
+        </button>
+        {control && (
+        <>
+          {' - '}
+          <button className="link comment-interact" type="button" onClick={handleDelete}>
+            Delete
+          </button>
+        </>
+        )}
+      </div>
     </div>
   );
 };

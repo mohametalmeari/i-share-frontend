@@ -168,3 +168,45 @@ border-radius: 4px;
   align-items: center;
   gap: 16px;
 }
+
+.comment-form{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.comment-form > textarea{
+  resize: vertical;
+  min-height: 50px; 
+}
+.comments-container{
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.photo-container{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.comment-interact-container{
+  font-size: 14px;
+  color: #156064;
+}
+
+.comment-interact{
+  cursor: pointer;
+}
+
+.comment-interact:hover{
+  color: #cbc0d3;
+}
+
+.comment-container{
+  color: #156064;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}

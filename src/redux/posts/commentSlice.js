@@ -60,11 +60,11 @@ export const createReply = createAsyncThunk(
 
 export const deleteComment = createAsyncThunk(
   'comments/deleteComment',
-  async ({ id, photoId, commentId }, thunkAPI) => {
+  async ({ id, photoId }, thunkAPI) => {
     try {
       setHeaders();
 
-      const response = await axios.delete(`${baseURL}/photos/${photoId}/comments/${commentId}/replies/${id}`);
+      const response = await axios.delete(`${baseURL}/photos/${photoId}/comments/${id}`);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue('failed to connect');
@@ -74,11 +74,10 @@ export const deleteComment = createAsyncThunk(
 
 export const deleteReply = createAsyncThunk(
   'comments/deleteReply',
-  async ({ id, photoId }, thunkAPI) => {
+  async ({ id, photoId, commentId }, thunkAPI) => {
     try {
       setHeaders();
-
-      const response = await axios.delete(`${baseURL}/photos/${photoId}/comments/${id}`);
+      const response = await axios.delete(`${baseURL}/photos/${photoId}/comments/${commentId}/replies/${id}`);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue('failed to connect');
