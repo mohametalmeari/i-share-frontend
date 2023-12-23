@@ -27,6 +27,7 @@ const Photos = () => {
           id={photo.id}
           name={photo.user.name}
           imageUrl={photo.image_url}
+          profileImage={photo.user.profile_image}
           caption={photo.caption}
           likes={photo.likes}
           liked={photo.liked}

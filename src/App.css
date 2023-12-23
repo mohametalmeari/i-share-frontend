@@ -47,6 +47,7 @@ main{
   display: flex;
   margin: 16px;
   justify-content: center;
+  flex-direction: column;
 }
 
 .user-form{ 
@@ -154,4 +155,16 @@ border-radius: 4px;
 
 .interaction-counts{
   font-size: 12px;
+}
+
+.profile-img{
+  width: 50px;
+  border-radius: 27px;
+  border: solid 2px #dee2ff;
+}
+
+.post-header{
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
