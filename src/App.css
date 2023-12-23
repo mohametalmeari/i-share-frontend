@@ -1,28 +1,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
 
-
-*{
+* {
   margin: 0;
   padding: 0;
   text-decoration: inherit;
   color: inherit;
   font-family: 'Ubuntu', sans-serif;
 }
-ul{
+
+ul {
   list-style: none;
 }
-body{
+
+body {
   background-color: #dee2ff;
   color: #8e9aaf;
 }
-nav{
+
+nav {
   display: flex;
   padding: 12px;
   border: solid 1px #cbc0d3;
   justify-content: center;
   align-items: center;
 }
-.nav-list{
+
+.nav-list {
   display: flex;
   flex: 1;
   font-size: 16px;
@@ -37,13 +40,14 @@ nav{
 .nav-link:hover {
   color: #cbc0d3;
 }
-.container{
+
+.container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-main{
+main {
   display: flex;
   margin: 16px;
   justify-content: center;
@@ -51,7 +55,7 @@ main{
   margin-bottom: 50px;
 }
 
-.user-form{ 
+.user-form {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -63,19 +67,19 @@ main{
   margin: 24px 0;
 }
 
-.input-field{
-padding: 4px 8px;
-color: #8e9aaf;
-outline: none;
-border: solid 1px #cbc0d3;
-border-radius: 4px;
+.input-field {
+  padding: 4px 8px;
+  color: #8e9aaf;
+  outline: none;
+  border: solid 1px #cbc0d3;
+  border-radius: 4px;
 }
 
 .input-field:focus {
   outline: solid 1px #ffb3c6;
 }
 
-.form-btn{
+.form-btn {
   width: fit-content;
   padding: 4px 8px;
   border: solid 1px #ffc2d1;
@@ -83,7 +87,7 @@ border-radius: 4px;
   background-color: #feeafa;
 }
 
-.form-btn:hover{
+.form-btn:hover {
   background-color: #feeafab3;
 }
 
@@ -94,17 +98,18 @@ border-radius: 4px;
   font-family: inherit;
 }
 
-.active{
+.active {
   color: #e54b4b;
 }
 
-.photos-container{
+.photos-container {
   display: flex;
   flex-direction: column;
   gap: 16px;
   flex: 1;
 }
-.photo-card{
+
+.photo-card {
   background-color: #feeafa;
   border: solid 1px #efd3d7;
   border-radius: 16px;
@@ -115,20 +120,21 @@ border-radius: 4px;
   gap: 16px;
 }
 
-*:has(> .photo-img){
+*:has(> .photo-img) {
   flex: 1;
   background-color: blue;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.photo-img{
+
+.photo-img {
   object-fit: cover;
   background-color: red;
   flex: 1;
 }
 
-.icon-btn{
+.icon-btn {
   background: none;
   border: none;
   display: flex;
@@ -147,65 +153,66 @@ border-radius: 4px;
   box-shadow: 0 0 4px 4px #dee2ff;
 }
 
-.control-container{
+.control-container {
   display: flex;
   justify-content: left;
   align-items: center;
   gap: 16px;
 }
 
-.interaction-counts{
+.interaction-counts {
   font-size: 12px;
 }
 
-.profile-img{
+.profile-img {
   width: 50px;
   border-radius: 27px;
   border: solid 2px #dee2ff;
 }
 
-.post-header{
+.post-header {
   display: flex;
   align-items: center;
   gap: 16px;
 }
 
-.comment-form{
+.comment-form {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.comment-form > textarea{
+.comment-form > textarea {
   resize: vertical;
-  min-height: 50px; 
+  min-height: 50px;
 }
-.comments-container{
+
+.comments-container {
   display: flex;
   flex-direction: column;
   gap: 24px;
 }
 
-.photo-container{
+.photo-container {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.comment-interact-container{
+.comment-interact-container {
   font-size: 14px;
   color: #156064;
 }
 
-.comment-interact{
+.comment-interact {
   cursor: pointer;
 }
 
-.comment-interact:hover{
+.comment-interact:hover {
   color: #cbc0d3;
 }
 
-.comment-container{
+.comment-container {
   color: #156064;
   display: flex;
   flex-direction: column;
@@ -215,7 +222,7 @@ border-radius: 4px;
   border-radius: 16px;
 }
 
-.replies-container{
+.replies-container {
   padding-left: 32px;
   display: flex;
   flex-direction: column;
