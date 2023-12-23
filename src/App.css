@@ -1,39 +1,157 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+
+*{
+  margin: 0;
+  padding: 0;
+  text-decoration: inherit;
+  color: inherit;
+  font-family: 'Ubuntu', sans-serif;
+}
+ul{
+  list-style: none;
+}
+body{
+  background-color: #dee2ff;
+  color: #8e9aaf;
+}
+nav{
+  display: flex;
+  padding: 12px;
+  border: solid 1px #cbc0d3;
+  justify-content: center;
+  align-items: center;
+}
+.nav-list{
+  display: flex;
+  flex: 1;
+  font-size: 16px;
+  justify-content: space-around;
+  align-items: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.nav-link {
+  color: #8e9aaf;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.nav-link:hover {
+  color: #cbc0d3;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.container{
   display: flex;
   flex-direction: column;
-  align-items: center;
+  min-height: 100vh;
+}
+
+main{
+  display: flex;
+  margin: 16px;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.user-form{ 
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+  padding: 64px 32px;
+  border: solid 2px #cbc0d3;
+  border-radius: 4px;
+  background-color: #cbc0d381;
+  margin: 24px 0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
+.input-field{
+padding: 4px 8px;
+color: #8e9aaf;
+outline: none;
+border: solid 1px #cbc0d3;
+border-radius: 4px;
+}
 
-  to {
-    transform: rotate(360deg);
-  }
+.input-field:focus {
+  outline: solid 1px #ffb3c6;
+}
+
+.form-btn{
+  width: fit-content;
+  padding: 4px 8px;
+  border: solid 1px #ffc2d1;
+  border-radius: 4px;
+  background-color: #feeafa;
+}
+
+.form-btn:hover{
+  background-color: #feeafab3;
+}
+
+.link {
+  border: none;
+  background: none;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+.active{
+  color: #e54b4b;
+}
+
+.photos-container{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+.photo-card{
+  background-color: #feeafa;
+  border: solid 1px #efd3d7;
+  border-radius: 16px;
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+*:has(> .photo-img){
+  flex: 1;
+  background-color: blue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.photo-img{
+  object-fit: cover;
+  background-color: red;
+  flex: 1;
+}
+
+.icon-btn{
+  background: none;
+  border: none;
+  display: flex;
+  padding: 0;
+  margin: 0;
+}
+
+.icon-btn > svg {
+  height: 24px;
+  width: 24px;
+}
+
+.icon-btn:hover {
+  cursor: pointer;
+  border-radius: 8px;
+  box-shadow: 0 0 4px 4px #dee2ff;
+}
+
+.control-container{
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  gap: 16px;
+}
+
+.interaction-counts{
+  font-size: 12px;
 }
