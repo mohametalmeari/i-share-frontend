@@ -36,18 +36,23 @@
 
 # 📖 I-SHARE <a name="about-project"></a>
 
-  **i-share** is a cool place for sharing photos online. You can post your pics, give stars to ones you like, and talk to people who love photos too. It's a fun way to connect and see awesome pictures from around the world. Join in, share your moments, and enjoy the visual stories! 📸✨
-
-<img src="./app/assets/images/drawSQL-i-post-export-2023-11-28.png" alt="Schema">
+i-share is an engaging full-stack project for sharing photos online, with a dynamic frontend that allows you to post, star, and connect with fellow photography enthusiasts. Our seamless backend powers the platform, and you can explore the technical side [here](https://github.com/mohametalmeari/i-share-api). Join i-share to share moments and enjoy a visual feast from around the world. 📸✨
 
 ## 🛠 Built With <a name="built-with"></a>
 
 ### Tech Stack <a name="tech-stack"></a>
 
 <details>
-  <summary>Client</summary>
+  <summary>Framework</summary>
   <ul>
     <li><a href="https://reactjs.org/">React.js</a></li>
+  </ul>
+</details>
+
+<details>
+  <summary>Library</summary>
+  <ul>
+    <li><a href="https://redux.js.org/">Redux</a></li>
   </ul>
 </details>
 
