@@ -6,7 +6,7 @@ import { createComment, fetchComments } from '../redux/posts/commentSlice';
 const CommentForm = ({ photoId }) => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
-    content: 'I love it!',
+    content: '',
   });
 
   const handleChange = (field) => (event) => {

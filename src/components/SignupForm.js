@@ -1,16 +1,18 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { signupUser } from '../redux/auth/authSlice';
+import { loggedInLinks } from './Navbar';
 
 const SignupForm = () => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
-    email: 'user1@mo-dev.site',
-    password: '123456',
-    password_confirmation: '123456',
-    username: 'user',
-    name: 'User',
-    image_url: 'url',
+    email: '',
+    password: '',
+    password_confirmation: '',
+    username: '',
+    name: '',
+    image_url: '',
   });
 
   const handleChange = (field) => (event) => {
@@ -64,10 +66,15 @@ const SignupForm = () => {
         placeholder="Password Confirmation"
         onChange={handleChange('password_confirmation')}
       />
-
-      <button className="form-btn" type="button" onClick={handleSignup}>
-        Sign Up
-      </button>
+      <div>
+        <button className="form-btn" type="button" onClick={handleSignup}>
+          Sign Up
+        </button>
+        {' or '}
+        <Link to={loggedInLinks[0].path}>
+          {loggedInLinks[0].text}
+        </Link>
+      </div>
     </>
   );
 };

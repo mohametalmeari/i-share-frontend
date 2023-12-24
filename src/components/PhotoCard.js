@@ -57,7 +57,7 @@ const PhotoCard = ({
             <img className="photo-img" src={postImg} alt="i-share" onError={postImageError} />
           </div>
         )}
-      <p>
+      <p className="caption">
         {caption}
       </p>
 

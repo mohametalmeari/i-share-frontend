@@ -8,7 +8,7 @@ const ReplyForm = ({
 }) => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
-    content: 'What a comment!',
+    content: '',
   });
 
   const handleChange = (field) => (event) => {
