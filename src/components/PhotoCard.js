@@ -17,8 +17,11 @@ const PhotoCard = ({
   const [profileImg, setProfileImg] = useState(profileImage);
   const [postImg, setPostImg] = useState(imageUrl);
 
-  const handleArchive = () => {
-    dispatch(archivePhoto(id));
+  const [archived, setArchived] = useState(archive);
+
+  const handleArchive = async () => {
+    const { payload } = await dispatch(archivePhoto(id));
+    setArchived(payload.archive);
   };
   const handleDelete = async () => {
     const { payload } = await dispatch(deletePhoto(id));
@@ -49,7 +52,7 @@ const PhotoCard = ({
       </div>
       {navigator
         ? (
-          <NavLink to={`photos/${id}`}>
+          <NavLink to={`/photos/${id}`}>
             <img className="photo-img" src={postImg} alt="i-share" onError={postImageError} />
           </NavLink>
         )
@@ -63,7 +66,7 @@ const PhotoCard = ({
       </p>
 
       <div className="control-container">
-        {archive || (
+        {archived || (
         <button className="icon-btn" type="button" onClick={handleLike}>
           {liked
             ? (<FilledStarIcon /> || 'Unlike')
@@ -72,13 +75,13 @@ const PhotoCard = ({
         )}
         {control && (
         <>
-          {archive || (
+          {archived || (
           <button className="icon-btn" type="button" onClick={handleDelete}>
             {<DeleteIcon /> || 'delete'}
           </button>
           )}
           <button className="icon-btn" type="button" onClick={handleArchive}>
-            {archive
+            {archived
               ? (<ArchivedIcon /> || 'Unarchive')
               : (<ArchiveIcon /> || 'Archive')}
           </button>
