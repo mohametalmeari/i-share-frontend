@@ -141,6 +141,7 @@ To run tests, run the following command:
 ## 🔭 Future Features <a name="future-features"></a>
 
 - Create **_Edit Profile_** page
+- Add **_Share Post_** button
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
