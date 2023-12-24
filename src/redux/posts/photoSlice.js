@@ -16,6 +16,20 @@ export const fetchPhotos = createAsyncThunk(
   },
 );
 
+export const fetchMyPhotos = createAsyncThunk(
+  'photos/fetchMyPhotos',
+  async (_, thunkAPI) => {
+    try {
+      setHeaders();
+
+      const response = await axios.get(`${baseURL}/my_photos`);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue('failed to connect');
+    }
+  },
+);
+
 export const createPhoto = createAsyncThunk(
   'photos/createPhoto',
   async (formData, thunkAPI) => {
@@ -100,6 +114,7 @@ const photo = {
 
 const initialState = {
   photos: [],
+  myPhotos: [],
   photo,
   isLoading: false,
   error: undefined,
@@ -125,6 +140,19 @@ const photoSlice = createSlice({
         state.photos = payload;
       })
       .addCase(fetchPhotos.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+    // Fetch My Photos
+      .addCase(fetchMyPhotos.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchMyPhotos.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = undefined;
+        state.photos = payload;
+      })
+      .addCase(fetchMyPhotos.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
       })
@@ -158,8 +186,11 @@ const photoSlice = createSlice({
       })
       .addCase(archivePhoto.fulfilled, (state, { payload }) => {
         if (payload.archive) {
-          state.photos = state.photos.filter((obj) => (obj.id !== payload.photoId));
+          state.photos = state.photos.map((obj) => (obj.id === payload.id
+            ? { ...obj, archive: payload.archive }
+            : obj));
         }
+
         state.photo = {
           ...state.photo,
           archive: payload.archive,
