@@ -44,6 +44,7 @@ const PhotoCard = ({
         <img className="profile-img" src={profileImg} alt="i-share" onError={profileImageError} />
         <p>
           {name}
+          {control && <span> (me) </span>}
         </p>
       </div>
       {navigator

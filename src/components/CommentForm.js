@@ -15,10 +15,10 @@ const CommentForm = ({ photoId }) => {
 
   const handleKeyDown = async (event) => {
     if (event.key === 'Enter') {
+      event.target.blur();
       await dispatch(createComment({ formData, photoId }));
       dispatch(fetchComments(photoId));
       setFormData({ content: '' });
-      event.target.blur();
     }
   };
   return (

@@ -17,9 +17,9 @@ const ReplyForm = ({
 
   const handleKeyDown = async (event) => {
     if (event.key === 'Enter') {
+      event.target.blur();
       await dispatch(createReply({ formData, photoId, commentId }));
       setFormData({ content: '' });
-      event.target.blur();
       setShowReply({ form: true, replies: true });
       setReplies((await dispatch(fetchReplies({ photoId, commentId }))).payload.replies);
     }
