@@ -1,8 +1,7 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-// export const baseURL = 'https://i-share-api.onrender.com';
-export const baseURL = 'http://127.0.0.1:3000';
+export const baseURL = 'https://i-share-api.onrender.com';
 
 export const setHeaders = () => {
   const authHeaders = JSON.parse(Cookies.get('authHeaders')) || null;
