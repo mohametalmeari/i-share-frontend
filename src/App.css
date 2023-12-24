@@ -51,8 +51,9 @@ main {
   display: flex;
   margin: 16px;
   justify-content: center;
-  flex-direction: column;
+  align-items: center;
   margin-bottom: 50px;
+  flex: 1;
 }
 
 .user-form {
@@ -65,6 +66,7 @@ main {
   border-radius: 4px;
   background-color: #cbc0d381;
   margin: 24px 0;
+  max-width: 400px;
 }
 
 .input-field {
@@ -103,7 +105,8 @@ main {
 }
 
 .photos-container {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   flex-direction: column;
   gap: 16px;
   flex: 1;
@@ -122,7 +125,6 @@ main {
 
 *:has(> .photo-img) {
   flex: 1;
-  background-color: blue;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -132,6 +134,7 @@ main {
   object-fit: cover;
   background-color: red;
   flex: 1;
+  width: 100%;
 }
 
 .icon-btn {
@@ -182,7 +185,7 @@ main {
   gap: 8px;
 }
 
-.comment-form > textarea {
+textarea {
   resize: vertical;
   min-height: 50px;
 }
@@ -197,6 +200,7 @@ main {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  flex: 1;
 }
 
 .comment-interact-container {
@@ -227,4 +231,59 @@ main {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.caption {
+  flex: 1;
+}
+
+@media only screen and (min-width: 600px) {
+  main {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  .photo-container {
+    flex-direction: row;
+  }
+
+  .comments-container {
+    flex: 1;
+    overflow-y: auto;
+    height: 80vh;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  main {
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  main {
+    padding-left: 150px;
+    padding-right: 150px;
+  }
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #feeafa;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #8e9aaf;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #2e294e;
 }

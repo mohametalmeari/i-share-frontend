@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { loginUser } from '../redux/auth/authSlice';
+import { loggedInLinks } from './Navbar';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const [formData, setFormData] = useState({ email: 'admin@mo-dev.site', password: '123456' });
+  const [formData, setFormData] = useState({ email: '', password: '' });
 
   const handleChange = (field) => (event) => {
     setFormData({ ...formData, [field]: event.target.value });
@@ -30,9 +32,15 @@ const LoginForm = () => {
         placeholder="Password"
         onChange={handleChange('password')}
       />
-      <button className="form-btn" type="button" onClick={handleLogin}>
-        Log in
-      </button>
+      <div>
+        <button className="form-btn" type="button" onClick={handleLogin}>
+          Log in
+        </button>
+        {' or '}
+        <Link to={loggedInLinks[1].path}>
+          {loggedInLinks[1].text}
+        </Link>
+      </div>
     </>
   );
 };

@@ -8,8 +8,8 @@ const CreatePhoto = () => {
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.photo);
   const [formData, setFormData] = useState({
-    caption: 'a new image',
-    image_url: 'a new image url',
+    caption: '',
+    image_url: '',
   });
 
   const handleChange = (field) => (event) => {
@@ -34,14 +34,14 @@ const CreatePhoto = () => {
         className="input-field"
         type="text"
         value={formData.image_url}
-        placeholder="image_url"
+        placeholder="image url ..."
         onChange={handleChange('image_url')}
       />
-      <input
+      <textarea
         className="input-field"
         type="text"
         value={formData.caption}
-        placeholder="caption"
+        placeholder="caption ..."
         onChange={handleChange('caption')}
       />
       <button className="form-btn" type="button" onClick={handleCreatePhoto}>

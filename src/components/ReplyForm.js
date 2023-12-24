@@ -8,7 +8,7 @@ const ReplyForm = ({
 }) => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
-    content: 'What a comment!',
+    content: '',
   });
 
   const handleChange = (field) => (event) => {
@@ -17,10 +17,10 @@ const ReplyForm = ({
 
   const handleKeyDown = async (event) => {
     if (event.key === 'Enter') {
+      event.target.blur();
+      setShowReply({ form: false, replies: true });
       await dispatch(createReply({ formData, photoId, commentId }));
       setFormData({ content: '' });
-      event.target.blur();
-      setShowReply({ form: true, replies: true });
       setReplies((await dispatch(fetchReplies({ photoId, commentId }))).payload.replies);
     }
   };
