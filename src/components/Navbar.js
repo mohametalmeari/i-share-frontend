@@ -8,7 +8,7 @@ export const loggedInLinks = [
 ];
 const loggedOutLinks = [
   { path: '/', text: 'Home' },
-  { path: '/profile', text: 'My Profile' },
+  { path: '/my_photos', text: 'My Photos' },
   { path: '/new', text: 'New Post' },
 ];
 
