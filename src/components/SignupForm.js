@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { signupUser } from '../redux/auth/authSlice';
 import { loggedInLinks } from './Navbar';
 
 const SignupForm = () => {
   const dispatch = useDispatch();
+  const { signupError } = useSelector((state) => state.auth);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -75,6 +76,7 @@ const SignupForm = () => {
           {loggedInLinks[0].text}
         </Link>
       </div>
+      <span className="error-msg">{signupError}</span>
     </>
   );
 };
