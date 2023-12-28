@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchPhotos } from '../redux/posts/photoSlice';
 import PhotoCard from './PhotoCard';
+import loadingIcon from '../assets/loading-photos-icon.gif';
 
 const Photos = () => {
   const dispatch = useDispatch();
@@ -13,14 +14,12 @@ const Photos = () => {
 
   if (isLoading) {
     return (
-      <p>
-        Loading Photos
-      </p>
+      <img className="loading-icon" src={loadingIcon} alt="loading" />
     );
   }
 
   return (
-    <>
+    <div className="photos-container">
       {photos.map((photo) => (
         <PhotoCard
           key={photo.id}
@@ -36,7 +35,7 @@ const Photos = () => {
           navigator
         />
       ))}
-    </>
+    </div>
   );
 };
 export default Photos;
