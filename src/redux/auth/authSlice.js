@@ -56,7 +56,7 @@ export const signupUser = createAsyncThunk(
 const initialState = {
   loggedIn: Cookies.get('loggedIn') || false,
   username: Cookies.get('username') || null,
-  isLoading: true,
+  isLoading: false,
   error: undefined,
 };
 
