@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import PhotoCard from '../components/PhotoCard';
 import { fetchPhoto, resetPhoto } from '../redux/posts/photoSlice';
 import Comments from '../components/Comments';
+import loadingIcon from '../assets/loading-photos-icon.gif';
 
 const ShowPhoto = () => {
   const id = +useParams().id;
@@ -20,9 +21,7 @@ const ShowPhoto = () => {
 
   if (isLoading) {
     return (
-      <p>
-        is loading
-      </p>
+      <img className="loading-icon" src={loadingIcon} alt="loading" />
     );
   }
 

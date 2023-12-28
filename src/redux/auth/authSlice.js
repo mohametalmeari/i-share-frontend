@@ -56,8 +56,10 @@ export const signupUser = createAsyncThunk(
 const initialState = {
   loggedIn: Cookies.get('loggedIn') || false,
   username: Cookies.get('username') || null,
-  isLoading: true,
+  isLoading: false,
   error: undefined,
+  loginError: undefined,
+  signupError: undefined,
 };
 
 const authSlice = createSlice({
@@ -68,6 +70,7 @@ const authSlice = createSlice({
     // Login
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
+        state.loginError = undefined;
       })
       .addCase(loginUser.fulfilled, (state, { payload }) => {
         state.isLoading = false;
@@ -80,7 +83,7 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, { payload }) => {
         state.isLoading = false;
-        state.error = payload;
+        state.loginError = payload;
       })
     // Logout
       .addCase(logoutUser.pending, (state) => {
@@ -105,6 +108,7 @@ const authSlice = createSlice({
     // Signup
       .addCase(signupUser.pending, (state) => {
         state.isLoading = true;
+        state.signupError = undefined;
       })
       .addCase(signupUser.fulfilled, (state, { payload }) => {
         state.isLoading = false;
@@ -117,9 +121,7 @@ const authSlice = createSlice({
       })
       .addCase(signupUser.rejected, (state, { payload }) => {
         state.isLoading = false;
-        state.error = payload;
-        state.loggedIn = false;
-        Cookies.set('loggedIn', JSON.stringify(false));
+        state.signupError = payload;
       });
   },
 });
