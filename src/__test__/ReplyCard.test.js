@@ -4,12 +4,12 @@ import ReplyCard from '../components/ReplyCard';
 describe(ReplyCard, () => {
   const reply = {
     id: 123,
-    user: {name: 'Alex', control: false},
+    user: { name: 'Alex', control: false },
     content: 'Test reply',
     likes: 7,
     liked: true,
-    
-  }
+
+  };
   const photoId = 456;
   const id = 789;
   const refreshLikes = () => {};
@@ -17,7 +17,7 @@ describe(ReplyCard, () => {
 
   test('renders Snapshot', () => {
     const { container } = render(
-        <ReplyCard
+      <ReplyCard
         id={reply.id}
         photoId={photoId}
         commentId={id}
@@ -28,7 +28,7 @@ describe(ReplyCard, () => {
         control={reply.user.control}
         refreshLikes={refreshLikes}
         removeFromReplies={removeFromReplies}
-      />
+      />,
     );
     expect(container).toMatchSnapshot();
   });
