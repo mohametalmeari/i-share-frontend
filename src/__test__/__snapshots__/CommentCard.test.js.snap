@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CommentCard renders Snapshot 1`] = `
+<div>
+  <div
+    class="comment-container"
+  >
+    <div>
+      <b>
+        Alex
+        : 
+      </b>
+      <span>
+        Test Comment
+      </span>
+    </div>
+    <div
+      class="interaction-counts"
+    >
+      <span>
+        7 Likes, 
+      </span>
+      <span>
+        13 Replies
+      </span>
+    </div>
+    <div
+      class="comment-interact-container"
+    >
+      <button
+        class="link comment-interact"
+        type="button"
+      >
+        Unlike
+      </button>
+       - 
+      <button
+        class="link comment-interact"
+        type="button"
+      >
+        Reply
+      </button>
+       - 
+      <button
+        class="link comment-interact"
+        type="button"
+      >
+        Show replies
+      </button>
+    </div>
+    <div
+      class="replies-container"
+    />
+  </div>
+</div>
+`;
