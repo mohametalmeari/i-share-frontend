@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReplyCard renders Snapshot 1`] = `
+<div>
+  <div>
+    <div>
+      <b>
+        Alex
+        : 
+      </b>
+      <span>
+        Test reply
+      </span>
+    </div>
+    <div
+      class="interaction-counts"
+    >
+      <span>
+        7 Likes
+      </span>
+    </div>
+    <div
+      class="comment-interact-container"
+    >
+      <button
+        class="link comment-interact"
+        type="button"
+      >
+        Unlike
+      </button>
+    </div>
+  </div>
+</div>
+`;
